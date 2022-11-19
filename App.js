@@ -7,40 +7,44 @@ import { Component } from 'react/cjs/react.production.min';
 import TwokRow from './TwokRow';
 import TwoksBuffer from './model/twoksBuffer';
 import CommunicationController from './model/CommunicationController';
+import Helper from './viewModel/helper';
 
 
 
-const communicationController = new CommunicationController()
+
 const sid = "KQW81h8HDaswwBIvBjG8"
+const helper = new Helper()
 
 class FeedScreen extends Component {
 
-  state={
-     twoksBuffer : new TwoksBuffer(),
-
+  state = {
+    twoksBuffer: new TwoksBuffer(),
   }
 
-  async  loadData() {
-    var result = await communicationController.getTwok(sid)
-    this.state.twoksBuffer.addTwok(result)
-    console.log(this.state.twoksBuffer.twoks)
+  async loadData() {
+
+
+    this.state.twoksBuffer=await helper.addTwok(this.state.twoksBuffer,sid)
+
+    //console.log(this.state.twoksBuffer.twoks)
     this.setState(this.state)
   }
-  componentDidMount(){
+  componentDidMount() {
     this.loadData()
   }
 
   render() {
-    
+
     console.log("render called")
-    console.log(this.state.twoksBuffer.twoks)
+    //console.log(this.state.twoksBuffer.twoks)
     return (
       <SafeAreaView style={{ flex: 1, justifyContent: 'center', alignItems: 'center', paddingTop: '20%' }}>
+
 
         <SafeAreaView style={styles.container}>
           <FlatList data={this.state.twoksBuffer.twoks}
             renderItem={(twok) => { return <TwokRow data={twok} /> }}
-            keyExtractor={(twok,index) => index}
+            keyExtractor={(twok, index) => index}
             snapToInterval={Dimensions.get('window').height}
             snapToAlignment="start"
             decelerationRate="fast"
@@ -50,7 +54,7 @@ class FeedScreen extends Component {
         </SafeAreaView>
         <View style={{ bottom: '2%', position: "absolute" }}>
           <TouchableOpacity
-            style={{ borderRadius: 100, paddingVertical: 15, paddingHorizontal: 15, backgroundColor: '#fcba03' }}
+            style={styles.buttonStyle}
             onPress={() => this.loadData()}>
             <View>
               <Image
@@ -77,6 +81,12 @@ const styles = StyleSheet.create({
   textStyle: {
     fontSize: 40,
     fontWeight: "700"
+  },
+  buttonStyle: {
+    borderRadius: 100,
+    paddingVertical: 15,
+    paddingHorizontal: 15,
+    backgroundColor: '#fcba03'
   }
 });
 
@@ -100,10 +110,8 @@ function ProfileScreen() {
 
 const Tab = createBottomTabNavigator();
 
-
-
 function MyTabs() {
-  
+
   return (
     <>
       <Tab.Navigator
