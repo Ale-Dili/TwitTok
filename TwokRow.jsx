@@ -4,23 +4,25 @@ import { StyleSheet, Text, View, Dimensions } from 'react-native';
 
 function TwokRow(props) {
     var twok = props.data.item
-    return (<View style={styles.twokStyle}>
-        <Text style={styles.textStyle}>{twok.text}</Text>
-    </View> );
+    let fontSize = 30+15*twok.fontsize;
+    console.log(fontSize)
+    return (
+        <View style={[styles.twokStyle,{backgroundColor:"#"+twok.bgcol, }]}>
+            <Text style={[styles.textStyle,{color:"#"+twok.fontcol,fontSize:fontSize }]}>{twok.text}</Text>
+        </View>
+    );
 }
 
 const styles = StyleSheet.create({
     twokStyle: {
-        width: "100%",
+        width: Dimensions.get('window').width,
+        
         height: Dimensions.get('window').height,
-        backgroundColor: 'yellow',
-        alignItems: 'center',
-        justifyContent: 'center',
+
     },
     textStyle: {
-        fontSize: 40,
         fontWeight: "700"
     }
-  });
+});
 
 export default TwokRow;
