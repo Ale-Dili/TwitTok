@@ -39,8 +39,7 @@ class FeedScreen extends Component {
     //console.log(this.state.twoksBuffer.twoks)
     return (
       <SafeAreaView style={{ flex: 1, justifyContent: 'center', alignItems: 'center', paddingTop: '20%' }}>
-
-
+        
         <SafeAreaView style={styles.container}>
           <FlatList data={this.state.twoksBuffer.twoks}
             renderItem={(twok) => { return <TwokRow data={twok} /> }}

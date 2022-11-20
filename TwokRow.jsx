@@ -1,22 +1,26 @@
 import React, { Component } from 'react';
 import { StyleSheet, Text, View, Dimensions, Image } from 'react-native';
 
-
+//MANCA POSIZIONAMENTO VERTICALE
 function TwokRow(props) {
+
     var twok = props.data.item
 
-    let fontSize = 30 + 15 * twok.fontsize;
+    console.log(getTextAlign(twok.halign))
+    let fontSize = 15 + 10 * twok.fontsize;
 
     const styles = StyleSheet.create({
         twokStyle: {
             width: Dimensions.get('window').width,
             height: Dimensions.get('window').height - 80 - 2,
-            backgroundColor: "#" + twok.bgcol
+            backgroundColor: "#" + twok.bgcol,
+            alignItems: getTextAlign(twok.halign),
         },
         textStyle: {
             fontWeight: "700",
             color: "#" + twok.fontcol,
-            fontSize: fontSize
+            fontSize: fontSize,
+
         },
         twokkerBar: {
             flexDirection: "row",
@@ -36,7 +40,7 @@ function TwokRow(props) {
             fontWeight: "700",
             marginLeft: 30,
             marginTop: 15,
-            color:"#" + twok.fontcol,
+            color: "#" + twok.fontcol,
 
         },
         line: {
@@ -59,13 +63,42 @@ function TwokRow(props) {
             </View>
 
             <View style={styles.line}></View>
+
             <View style={[styles.twokStyle]}>
-                <Text style={[styles.textStyle]}>{twok.text}</Text>
+                <View style={styles.verticalTextPositioning}>
+                 
+                        <Text style={[styles.textStyle,]}>{twok.text}</Text>
+
+                </View>
+
             </View>
         </>
     );
 
 
+}
+//ritorna left in caso di errore del dato
+function getTextAlign(halign) {
+    switch (halign) {
+        case 0:
+            return 'flex-start'
+            break;
+        case 1:
+            return 'center'
+            break;
+        case 2:
+            return 'flex-end'
+            break;
+        default:
+            return 'left'
+
+    }
+}
+
+function getVerticalPositioning(valign) {
+    // valign += 1
+    // var value = 40 + valign * 10
+    return {top:'20%'}
 }
 
 
