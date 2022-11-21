@@ -10,6 +10,7 @@ class FollowedList extends Component {
     state = {
         followed: []
     }
+    
     helper
     async componentDidMount() {
         this.helper = new Helper(sid)
@@ -20,13 +21,8 @@ class FollowedList extends Component {
     render() {
         return (
             <SafeAreaView style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-                <FlatList data={this.state.followed} renderItem={({ item, index }) => (
-
-                    <TouchableOpacity onPress={() => (this.props.navigation.navigate('SingleUser'))}>
-                        <FollowedUserRow data={item} index={index}></FollowedUserRow>
-                    </TouchableOpacity>
-
-                )
+                <FlatList data={this.state.followed} renderItem={({ item, index }) =>         
+                        <FollowedUserRow data={item} index={index} navigation={this.props.navigation} ></FollowedUserRow>              
                 }></FlatList>
             </SafeAreaView>
         )

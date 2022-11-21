@@ -46,14 +46,14 @@ class FeedScreen extends Component {
   }
 
   async loadData() {
-    this.state.twoksBuffer = await this.helper.addTwok(this.state.twoksBuffer, sid)
+    this.state.twoksBuffer = await this.helper.addTwok(this.state.twoksBuffer)
     this.setState(this.state)
   }
 
   async componentDidMount() {
     this.helper=new Helper(sid)
     for (var i = 0; i < 5; i++) {
-      this.state.twoksBuffer = await this.helper.addTwok(this.state.twoksBuffer, sid)
+      this.state.twoksBuffer = await this.helper.addTwok(this.state.twoksBuffer)
     }
     this.setState(this.state)
   }

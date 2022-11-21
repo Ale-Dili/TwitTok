@@ -40,20 +40,20 @@ const styles = StyleSheet.create({
 function FollowedUserRow(props, { navigation }) {
     var user = props.data
     var index = props.index
+    //console.log(user.uid)
 
     return (
-
-
-        <View style={styles.twokkerBar}>
-            <Image
-                style={styles.twokkerPic}
-                source={require('./assets/TwitTokImg/defaultPic.png')}
-            />
-
-            <Text style={styles.twokkerName}>
-                {user.name}
-            </Text>
-        </View>
+        <TouchableOpacity onPress={() => (props.navigation.navigate('SingleUser',{uid:user.uid}))}>
+            <View style={styles.twokkerBar}>
+                <Image
+                    style={styles.twokkerPic}
+                    source={require('./assets/TwitTokImg/defaultPic.png')}
+                />
+                <Text style={styles.twokkerName}>
+                    {user.name}
+                </Text>
+            </View>
+        </TouchableOpacity>
 
 
 

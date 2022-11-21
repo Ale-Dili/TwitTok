@@ -37,20 +37,23 @@ const sid = "KQW81h8HDaswwBIvBjG8"
 
 class FollowedUser extends Component {
     helper
+    uid
 
     state = {
         twoksBuffer: new TwoksBuffer(),
     }
 
     async loadData() {
-        this.state.twoksBuffer = await this.helper.addTwok(this.state.twoksBuffer, sid)
+        
+        this.state.twoksBuffer = await this.helper.addTwok(this.state.twoksBuffer,this.uid )
         this.setState(this.state)
     }
 
     async componentDidMount() {
+        this.uid=this.props.route.params.uid
         this.helper = new Helper(sid)
         for (var i = 0; i < 5; i++) {
-            this.state.twoksBuffer = await this.helper.addTwok(this.state.twoksBuffer, sid)
+            this.state.twoksBuffer = await this.helper.addTwok(this.state.twoksBuffer,this.uid)
         }
         this.setState(this.state)
     }

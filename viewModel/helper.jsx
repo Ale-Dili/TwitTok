@@ -6,8 +6,15 @@ class Helper {
         this.sid = sid
     }
 
-    async addTwok(twoksBuffer) {
-        var result = await this.communicationController.getTwok(this.sid)
+    async addTwok(twoksBuffer,uid) {
+        //console.log(uid)
+        if(uid){
+    
+            var result = await this.communicationController.getTwok(this.sid,uid)
+        }else{
+            var result = await this.communicationController.getTwok(this.sid)
+        }
+        
         twoksBuffer.addTwok(result)
         return twoksBuffer
     }

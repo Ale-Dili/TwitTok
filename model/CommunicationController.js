@@ -36,11 +36,11 @@ class CommunicationController {
     }
 
 
-    //tid è opzionale
-    getTwok = async (sid, tid) => {
+    //uid è opzionale
+    getTwok = async (sid, uid) => {
         var param
-        if (tid) {
-            param = JSON.stringify({ sid: sid, tid: tid })
+        if (uid) {
+            param = JSON.stringify({ sid: sid, uid: uid })
         } else {
             param = JSON.stringify({ sid: sid })
         }
