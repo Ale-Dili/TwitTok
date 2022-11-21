@@ -1,12 +1,10 @@
 import React, { Component } from 'react';
-import { StyleSheet, Text, View, Dimensions, Image } from 'react-native';
+import { StyleSheet, Text, View, Dimensions, Image, TouchableOpacity } from 'react-native';
 
 //MANCA POSIZIONAMENTO VERTICALE
 function TwokRow(props) {
 
-    var twok = props.data.item
-
-    console.log(getTextAlign(twok.halign))
+    var twok = props.data.item;
     let fontSize = 15 + 10 * twok.fontsize;
 
     const styles = StyleSheet.create({
@@ -25,22 +23,22 @@ function TwokRow(props) {
         twokkerBar: {
             flexDirection: "row",
             height: 80,
-            backgroundColor: "#" + twok.bgcol
+            backgroundColor: "#" + twok.bgcol,
+            flexDirection: "row",
+            justifyContent: "space-between"
         },
         twokkerPic: {
             marginTop: 15,
-            marginLeft: 20,
+            marginStart: 5,
             height: 50,
             width: 50,
-
-
         },
         twokkerName: {
-            fontSize: 40,
+            marginTop: 30,
+            fontSize: 20,
             fontWeight: "700",
-            marginLeft: 30,
-            marginTop: 15,
             color: "#" + twok.fontcol,
+            marginEnd:15
 
         },
         line: {
@@ -51,7 +49,6 @@ function TwokRow(props) {
         },
 
     });
-
     return (
         <>
             <View style={styles.twokkerBar}>
@@ -59,15 +56,18 @@ function TwokRow(props) {
                     style={styles.twokkerPic}
                     source={require('./assets/TwitTokImg/defaultPic.png')}
                 />
-                <Text style={styles.twokkerName}>{twok.name}</Text>
+                <TouchableOpacity onPress={() => (props.helper.isFollowed(twok.uid) ? console.log('lo segue') : console.log('non lo segue'))}>
+                    <Text style={styles.twokkerName}>{twok.name}</Text>
+                </TouchableOpacity>
+
             </View>
 
             <View style={styles.line}></View>
 
             <View style={[styles.twokStyle]}>
                 <View style={styles.verticalTextPositioning}>
-                 
-                        <Text style={[styles.textStyle,]}>{twok.text}</Text>
+
+                    <Text style={[styles.textStyle,]}>{twok.text}</Text>
 
                 </View>
 
@@ -77,6 +77,9 @@ function TwokRow(props) {
 
 
 }
+
+
+
 //ritorna left in caso di errore del dato
 function getTextAlign(halign) {
     switch (halign) {
@@ -98,7 +101,7 @@ function getTextAlign(halign) {
 function getVerticalPositioning(valign) {
     // valign += 1
     // var value = 40 + valign * 10
-    return {top:'20%'}
+    return { top: '20%' }
 }
 
 
