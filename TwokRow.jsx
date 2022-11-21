@@ -38,7 +38,7 @@ function TwokRow(props) {
             fontSize: 20,
             fontWeight: "700",
             color: "#" + twok.fontcol,
-            marginEnd:15
+            marginEnd: 15
 
         },
         line: {

@@ -14,16 +14,17 @@ class CommunicationController {
 
                 break;
             case 400:
-                console.error(endpoint+"Bad parameters")
+                console.error(endpoint+" Bad parameters")
+                console.error(param)
                 break;
             case 401:
-                console.error(endpoint+"Invalid sid")
+                console.error(endpoint+" Invalid sid")
                 break;
             case 413:
-                console.error(endpoint+"Request Entity Too Large")
+                console.error(endpoint+" Request Entity Too Large")
                 break;
             default:
-                console.error(endpoint+"dunno what to do :(")
+                console.error(endpoint+" dunno what to do :(")
                 return
                 break;
         }
