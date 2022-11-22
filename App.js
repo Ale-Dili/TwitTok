@@ -5,17 +5,22 @@ import { Component } from 'react';
 import FeedScreen from './FeedScreen';
 import ProfileScreen from './ProfileScreen';
 import FollowedScreen from './FollowedScreen';
+import { ContextUserInfo } from './ContextUserInfo';
 
 
 
 
-const sid = "KQW81h8HDaswwBIvBjG8"
+//const sid = "KQW81h8HDaswwBIvBjG8"
 const Tab = createBottomTabNavigator();
 
 
+
+
 function MyTabs() {
+
   return (
     <>
+
       <Tab.Navigator
         initialRouteName="TwikTok"
         screenOptions={{
@@ -36,8 +41,8 @@ function MyTabs() {
           name="TwikTok"
           component={FeedScreen}
           options={{ tabBarLabel: 'TwikTok', headerStyle: { backgroundColor: '#fcba03' } }}
-          >
-            {/* initialParams={{helper:helper}} . this.props.route.params */}
+        >
+          {/* initialParams={{helper:helper}} . this.props.route.params */}
 
         </Tab.Screen>
         <Tab.Screen
@@ -46,6 +51,7 @@ function MyTabs() {
           options={{ tabBarLabel: 'Profile', headerStyle: { backgroundColor: '#fcba03' } }}
         />
       </Tab.Navigator>
+
     </>
   );
 }
@@ -54,7 +60,11 @@ class App extends Component {
   render() {
     return (
       <NavigationContainer>
-        <MyTabs />
+        
+          {/* <ContextUserInfo.Provider value={{sid:"KQW81h8HDaswwBIvBjG8"}}> */}
+          <MyTabs />
+          {/* </ContextUserInfo.Provider> */}
+ 
       </NavigationContainer>
     );
   }

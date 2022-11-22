@@ -1,9 +1,12 @@
-import * as React from 'react';
-import { Text, SafeAreaView, Button, View, TouchableOpacity, Image, StyleSheet, Dimensions, FlatList } from 'react-native';
+import React, { useState, useEffect } from 'react';
+import { Text, SafeAreaView, Button, View, TouchableOpacity, Image, StyleSheet, Dimensions, FlatList, } from 'react-native';
 import { Component } from 'react';
 import TwokRow from './TwokRow';
 import TwoksBuffer from './model/twoksBuffer';
 import Helper from './viewModel/Helper';
+import { ContextUserInfo } from './ContextUserInfo';
+
+
 
 
 
@@ -33,63 +36,62 @@ const styles = StyleSheet.create({
   },
 });
 
-const sid = "KQW81h8HDaswwBIvBjG8"
+//const sid = "KQW81h8HDaswwBIvBjG8"
 //const helper = new Helper(sid)
 
+function FeedScreen() {
 
-class FeedScreen extends Component {
+  let helper
+  sid = "KQW81h8HDaswwBIvBjG8"
 
-  helper
+  const [state, setState] = useState({ twoksBuffer: new TwoksBuffer(), })
 
-  state = {
-    twoksBuffer: new TwoksBuffer(),
-  }
-
-  async loadData() {
-    this.state.twoksBuffer = await this.helper.addTwok(this.state.twoksBuffer)
-    this.setState(this.state)
-  }
-
-  async componentDidMount() {
-    this.helper=new Helper(sid)
-    for (var i = 0; i < 5; i++) {
-      this.state.twoksBuffer = await this.helper.addTwok(this.state.twoksBuffer)
+  useEffect(() => {
+    async function onMount() {
+      helper = new Helper(sid)
+      for (var i = 0; i < 5; i++) {
+        state.twoksBuffer = await helper.addTwok(state.twoksBuffer)
+      }
+      setState(state)
     }
-    this.setState(this.state)
+    onMount()
+  }, [])
+
+
+
+  async function loadData() {
+    state.twoksBuffer = await helper.addTwok(state.twoksBuffer)
+    setState(state)
   }
 
-  render() {
+  return (
+    <SafeAreaView style={{ flex: 1, justifyContent: 'center', alignItems: 'center', paddingTop: '20%' }}>
+      <SafeAreaView style={styles.container}>
+        <FlatList data={state.twoksBuffer.twoks}
+          renderItem={(twok) => { return <TwokRow data={twok} helper={helper} /> }}
+          keyExtractor={(twok, index) => index}
+          snapToInterval={Dimensions.get('window').height}
+          snapToAlignment="start"
+          decelerationRate="fast"
+          onScrollEndDrag={() => loadData()}
+        />
 
-    //console.log("render called")
-    //console.log(this.state.twoksBuffer.twoks)
-    return (
-      <SafeAreaView style={{ flex: 1, justifyContent: 'center', alignItems: 'center', paddingTop: '20%' }}>
-        <SafeAreaView style={styles.container}>
-          <FlatList data={this.state.twoksBuffer.twoks}
-            renderItem={(twok) => { return <TwokRow data={twok} helper={this.helper} /> }}
-            keyExtractor={(twok, index) => index}
-            snapToInterval={Dimensions.get('window').height}
-            snapToAlignment="start"
-            decelerationRate="fast"
-            onScrollEndDrag={() => this.loadData()}
-          />
-
-        </SafeAreaView>
-        <View style={{ bottom: '2%', position: "absolute" }}>
-          <TouchableOpacity
-            style={styles.buttonStyle}
-            onPress={() => this.setState(this.state)}>
-            <View>
-              <Image
-                style={{ height: 50, width: 50 }}
-                source={require('./assets/TwitTokImg/plus-sign.png')}
-              />
-            </View>
-          </TouchableOpacity>
-        </View>
       </SafeAreaView>
-    );
-  }
+      <View style={{ bottom: '2%', position: "absolute" }}>
+        <TouchableOpacity
+          style={styles.buttonStyle}
+          onPress={() => setState(state)}>
+          <View>
+            <Image
+              style={{ height: 50, width: 50 }}
+              source={require('./assets/TwitTokImg/plus-sign.png')}
+            />
+          </View>
+        </TouchableOpacity>
+      </View>
+    </SafeAreaView>
+  )
 }
+
 
 export default FeedScreen
