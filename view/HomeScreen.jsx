@@ -7,7 +7,7 @@ import TwoksBuffer from '../model/twoksBuffer';
 import Helper from '../viewModel/Helper';
 import ContextUserInfo from '../ContextUserInfo';
 import FeedScreen from './FeedScreen';
-import FollowedUser from './FollowedUser';
+import User from './User';
 
 
 const Stack = createNativeStackNavigator();
@@ -16,7 +16,7 @@ function HomeScreen(){
     return (
         <Stack.Navigator initialRouteName="Feed">
           <Stack.Screen name="Feed" component={FeedScreen} options={{headerShown: false}}/>
-          <Stack.Screen name="SingleUser" component={FollowedUser} /> 
+          <Stack.Screen name="SingleUser" component={User} /> 
         </Stack.Navigator>
       ); 
 }

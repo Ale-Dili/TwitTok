@@ -79,7 +79,7 @@ function FeedScreen(props) {
     <SafeAreaView style={{ flex: 1, justifyContent: 'center', alignItems: 'center', paddingTop: '20%' }}>
       <SafeAreaView style={styles.container}>
         <FlatList data={state.twoksBuffer.twoks}
-          renderItem={(twok) => { return <TwokRow data={twok} helper={helper} navigate={navigate}/> }}
+          renderItem={(twok) => { return <TwokRow data={twok} helper={helper} navigate={navigate} touchDisabled={false}/> }}
           keyExtractor={(twok, index) => index}
           snapToInterval={Dimensions.get('window').height}
           snapToAlignment="start"

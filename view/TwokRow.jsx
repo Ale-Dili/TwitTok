@@ -56,7 +56,7 @@ function TwokRow(props) {
                     style={styles.twokkerPic}
                     source={require('../assets/TwitTokImg/defaultPic.png')}
                 />
-                <TouchableOpacity onPress={() => props.navigate(twok.uid)}>
+                <TouchableOpacity onPress={() => props.navigate(twok.uid)} disabled={props.touchDisabled}>
                     <Text style={styles.twokkerName}>{twok.name}</Text>
                 </TouchableOpacity>
 
