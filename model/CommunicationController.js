@@ -36,6 +36,7 @@ class CommunicationController {
     }
 
 
+
     //uid è opzionale
     getTwok = async (sid, uid) => {
         var param
@@ -78,6 +79,12 @@ class CommunicationController {
     async getFollowed(sid){
         var param = JSON.stringify({ sid: sid})
         var endpoint = "getFollowed"
+        return await this.generalRequest(param, endpoint) 
+    }
+
+    async register(){
+        var param = JSON.stringify({})
+        var endpoint = "register"
         return await this.generalRequest(param, endpoint) 
     }
 }

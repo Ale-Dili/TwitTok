@@ -1,13 +1,10 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import { Text, SafeAreaView, Button, View, TouchableOpacity, Image, StyleSheet, Dimensions, FlatList, } from 'react-native';
 import { Component } from 'react';
 import TwokRow from './TwokRow';
 import TwoksBuffer from './model/twoksBuffer';
 import Helper from './viewModel/Helper';
-import { ContextUserInfo } from './ContextUserInfo';
-
-
-
+import ContextUserInfo from './ContextUserInfo';
 
 
 const styles = StyleSheet.create({
@@ -40,22 +37,24 @@ const styles = StyleSheet.create({
 //const helper = new Helper(sid)
 
 function FeedScreen() {
+  const [state, setState] = useState({ twoksBuffer: new TwoksBuffer(),})
 
-  let helper
-  sid = "KQW81h8HDaswwBIvBjG8"
+  
+  const context = useContext(ContextUserInfo)
+  let helper = context.helper
 
-  const [state, setState] = useState({ twoksBuffer: new TwoksBuffer(), })
+  //console.log()
 
   useEffect(() => {
     async function onMount() {
-      helper = new Helper(sid)
+      console.log("mount feed")
       for (var i = 0; i < 5; i++) {
         state.twoksBuffer = await helper.addTwok(state.twoksBuffer)
       }
       setState(state)
     }
     onMount()
-  }, [])
+  },[])
 
 
 

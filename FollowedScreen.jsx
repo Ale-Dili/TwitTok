@@ -6,17 +6,15 @@ import FollowedList from './FollowedList';
 
 const Stack = createNativeStackNavigator();
 
-class FollowedScreen extends Component {
+function FollowedScreen(){
 
-    render() {
-      //console.log(this.props.navigation.navigate)
       return (
         <Stack.Navigator initialRouteName="List">
           <Stack.Screen name="List" component={FollowedList} />
           <Stack.Screen name="SingleUser" component={FollowedUser} /> 
         </Stack.Navigator>
       );
-    }
+    
   }
 
   export default FollowedScreen

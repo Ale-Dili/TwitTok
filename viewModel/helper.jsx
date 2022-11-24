@@ -1,4 +1,6 @@
+import { SafeAreaViewBase } from "react-native";
 import CommunicationController from "../model/CommunicationController"
+import KeyValueStorage from "../model/KeyValueStorage";
 class Helper {
     communicationController = new CommunicationController()
     sid;
@@ -38,9 +40,21 @@ class Helper {
 
     async getFollowed() {
         var result = await this.communicationController.getFollowed(this.sid)
-        //console.log(result)
         return result
     }
+
+    //check se prima run -> registra e torna sid
+    // se seconda run -> prende sid da async storage
+    async getSid(){
+        if(await KeyValueStorage.isFirstRun()){
+            result = await this.communicationController.register()
+            KeyValueStorage.setSid(result.sid)
+        }
+            return await KeyValueStorage.getSid()
+        
+    }
+
+    
 }
 
 export default Helper

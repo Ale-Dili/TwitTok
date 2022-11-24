@@ -1,31 +1,66 @@
 import * as React from 'react';
+import { useState, useEffect, useContext } from 'react';
 import { Text, SafeAreaView, TouchableOpacity, FlatList } from 'react-native';
-import { Component } from 'react';
 import Helper from './viewModel/Helper';
 import FollowedUserRow from './FollowedUserRow';
+import ContextUserInfo from './ContextUserInfo';
 
-const sid = "KQW81h8HDaswwBIvBjG8"
 
-class FollowedList extends Component {
-    state = {
-        followed: []
-    }
+
+
+function FollowedList({ navigation }) {
     
-    helper
-    async componentDidMount() {
-        this.helper = new Helper(sid)
-        this.state.followed = await this.helper.getFollowed(sid)
-        //console.log(this.state.followed)
-        this.setState(this.state)
-    }
-    render() {
-        return (
-            <SafeAreaView style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-                <FlatList data={this.state.followed} renderItem={({ item, index }) =>         
-                        <FollowedUserRow data={item} index={index} navigation={this.props.navigation} ></FollowedUserRow>              
-                }></FlatList>
-            </SafeAreaView>
-        )
-    }
+    const context = useContext(ContextUserInfo)
+    let helper = context.helper
+    let sid = context.sid
+
+    const [buffer, setBuffer] = useState([])
+
+
+    useEffect(()=>{
+
+        async function onMount() {
+            temp = await helper.getFollowed()          
+            setBuffer(temp)  
+          } 
+
+          onMount()
+        
+          //console.log(state)
+    },[])
+
+
+   //console.log(buffer)
+    return (
+        <SafeAreaView style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+            <FlatList data={buffer} renderItem={({ item, index }) =>{return(
+                <FollowedUserRow data={item} index={index} navigation={navigation} ></FollowedUserRow>
+    )}}></FlatList>
+        </SafeAreaView>
+    )
+
 }
+
+// class FollowedList extends Component {
+//     state = {
+//         followed: []
+//     }
+
+
+//     async componentDidMount() {
+//         this.helper = new Helper(sid)
+//         this.state.followed = await this.helper.getFollowed(sid)
+//         //console.log(this.state.followed)
+//         this.setState(this.state)
+//     }
+//     render() {
+//         return (
+//             <SafeAreaView style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+//                 <FlatList data={this.state.followed} renderItem={({ item, index }) =>
+//                     <FollowedUserRow data={item} index={index} navigation={this.props.navigation} ></FollowedUserRow>
+//                 }></FlatList>
+//             </SafeAreaView>
+//         )
+//     }
+// }
 export default FollowedList
