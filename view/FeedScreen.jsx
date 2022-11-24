@@ -1,10 +1,12 @@
 import React, { useState, useEffect, useContext } from 'react';
-import { Text, SafeAreaView, Button, View, TouchableOpacity, Image, StyleSheet, Dimensions, FlatList, } from 'react-native';
+import { Text, SafeAreaView, Button, View, TouchableOpacity, Image, StyleSheet, Dimensions, FlatList, ActivityIndicator, } from 'react-native';
 import { Component } from 'react';
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import TwokRow from './TwokRow';
-import TwoksBuffer from './model/twoksBuffer';
-import Helper from './viewModel/Helper';
-import ContextUserInfo from './ContextUserInfo';
+import TwoksBuffer from '../model/twoksBuffer';
+import Helper from '../viewModel/Helper';
+import ContextUserInfo from '../ContextUserInfo';
+
 
 
 const styles = StyleSheet.create({
@@ -33,28 +35,33 @@ const styles = StyleSheet.create({
   },
 });
 
+
+
 //const sid = "KQW81h8HDaswwBIvBjG8"
 //const helper = new Helper(sid)
 
-function FeedScreen() {
+function FeedScreen(props) {
   const [state, setState] = useState({ twoksBuffer: new TwoksBuffer(),})
 
   
-  const context = useContext(ContextUserInfo)
+  const context = useContext(ContextUserInfo) 
   let helper = context.helper
 
   //console.log()
 
   useEffect(() => {
     async function onMount() {
-      console.log("mount feed")
+      if(!context.sid){       
+        return <ActivityIndicator size="small" color="#000000"></ActivityIndicator>
+      }
+
       for (var i = 0; i < 5; i++) {
         state.twoksBuffer = await helper.addTwok(state.twoksBuffer)
       }
       setState(state)
     }
     onMount()
-  },[])
+  },[context])
 
 
 
@@ -63,11 +70,16 @@ function FeedScreen() {
     setState(state)
   }
 
+  function navigate(uid){
+    console.log(uid)
+    props.navigation.navigate('SingleUser',{uid:uid})
+
+  }
   return (
     <SafeAreaView style={{ flex: 1, justifyContent: 'center', alignItems: 'center', paddingTop: '20%' }}>
       <SafeAreaView style={styles.container}>
         <FlatList data={state.twoksBuffer.twoks}
-          renderItem={(twok) => { return <TwokRow data={twok} helper={helper} /> }}
+          renderItem={(twok) => { return <TwokRow data={twok} helper={helper} navigate={navigate}/> }}
           keyExtractor={(twok, index) => index}
           snapToInterval={Dimensions.get('window').height}
           snapToAlignment="start"
@@ -83,7 +95,7 @@ function FeedScreen() {
           <View>
             <Image
               style={{ height: 50, width: 50 }}
-              source={require('./assets/TwitTokImg/plus-sign.png')}
+              source={require('../assets/TwitTokImg/plus-sign.png')}
             />
           </View>
         </TouchableOpacity>

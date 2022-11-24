@@ -54,9 +54,9 @@ function TwokRow(props) {
             <View style={styles.twokkerBar}>
                 <Image
                     style={styles.twokkerPic}
-                    source={require('./assets/TwitTokImg/defaultPic.png')}
+                    source={require('../assets/TwitTokImg/defaultPic.png')}
                 />
-                <TouchableOpacity onPress={() => (props.helper.isFollowed(twok.uid) ? console.log('lo segue') : console.log('non lo segue'))}>
+                <TouchableOpacity onPress={() => props.navigate(twok.uid)}>
                     <Text style={styles.twokkerName}>{twok.name}</Text>
                 </TouchableOpacity>
 

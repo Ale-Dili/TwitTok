@@ -2,8 +2,8 @@ import * as React from 'react';
 import {SafeAreaView, View, TouchableOpacity, Image, StyleSheet, Dimensions, FlatList } from 'react-native';
 import { Component } from 'react';
 import TwokRow from './TwokRow';
-import TwoksBuffer from './model/twoksBuffer';
-import Helper from './viewModel/Helper';
+import TwoksBuffer from '../model/twoksBuffer';
+import Helper from '../viewModel/Helper';
 
 
 const styles = StyleSheet.create({
@@ -35,6 +35,8 @@ const styles = StyleSheet.create({
 const sid = "KQW81h8HDaswwBIvBjG8"
 //const helper = new Helper(sid)
 
+
+
 class FollowedUser extends Component {
     helper
     uid
@@ -51,6 +53,7 @@ class FollowedUser extends Component {
 
     async componentDidMount() {
         this.uid=this.props.route.params.uid
+        
         this.helper = new Helper(sid)
         for (var i = 0; i < 5; i++) {
             this.state.twoksBuffer = await this.helper.addTwok(this.state.twoksBuffer,this.uid)
@@ -82,7 +85,7 @@ class FollowedUser extends Component {
                         <View>
                             <Image
                                 style={{ height: 50, width: 50 }}
-                                source={require('./assets/TwitTokImg/plus-sign.png')}
+                                source={require('../assets/TwitTokImg/plus-sign.png')}
                             />
                         </View>
                     </TouchableOpacity>

@@ -37,7 +37,7 @@ const styles = StyleSheet.create({
 
 });
 
-function FollowedUserRow(props, { navigation }) {
+function FollowedUserRow(props) {
     var user = props.data
     var index = props.index
     //console.log(user.uid)
@@ -47,7 +47,7 @@ function FollowedUserRow(props, { navigation }) {
             <View style={styles.twokkerBar}>
                 <Image
                     style={styles.twokkerPic}
-                    source={require('./assets/TwitTokImg/defaultPic.png')}
+                    source={require('../assets/TwitTokImg/defaultPic.png')}
                 />
                 <Text style={styles.twokkerName}>
                     {user.name}

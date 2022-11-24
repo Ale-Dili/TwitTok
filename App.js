@@ -2,12 +2,13 @@ import * as React from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { Component } from 'react';
-import FeedScreen from './FeedScreen';
-import ProfileScreen from './ProfileScreen';
-import FollowedScreen from './FollowedScreen';
+import HomeScreen from './view/HomeScreen.jsx';
+import ProfileScreen from './view/ProfileScreen';
+import FollowedScreen from './view/FollowedScreen';
 import ContextUserInfo from './ContextUserInfo';
 import Helper from './viewModel/Helper';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+
 
 
 
@@ -42,7 +43,7 @@ function MyTabs() {
 
           <Tab.Screen
             name="TwikTok"
-            component={FeedScreen}
+            component={HomeScreen}
             options={{ tabBarLabel: 'TwikTok', headerStyle: { backgroundColor: '#fcba03' } }}
           >
             {/* initialParams={{helper:helper}} . this.props.route.params */}
@@ -76,7 +77,7 @@ function App() {
     f()
   },[])
 
-  console.log(sid)
+  //console.log(sid)
 
   return (
     <NavigationContainer>

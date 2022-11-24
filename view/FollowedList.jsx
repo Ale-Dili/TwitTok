@@ -1,15 +1,14 @@
 import * as React from 'react';
 import { useState, useEffect, useContext } from 'react';
 import { Text, SafeAreaView, TouchableOpacity, FlatList } from 'react-native';
-import Helper from './viewModel/Helper';
+import Helper from '../viewModel/Helper';
 import FollowedUserRow from './FollowedUserRow';
-import ContextUserInfo from './ContextUserInfo';
+import ContextUserInfo from '../ContextUserInfo';
 
 
 
 
 function FollowedList({ navigation }) {
-    
     const context = useContext(ContextUserInfo)
     let helper = context.helper
     let sid = context.sid
@@ -20,7 +19,10 @@ function FollowedList({ navigation }) {
     useEffect(()=>{
 
         async function onMount() {
-            temp = await helper.getFollowed()          
+            if(!context.sid){       
+                return <ActivityIndicator size="small" color="#000000"></ActivityIndicator>
+              }
+            var temp = await helper.getFollowed()          
             setBuffer(temp)  
           } 
 
@@ -28,7 +30,6 @@ function FollowedList({ navigation }) {
         
           //console.log(state)
     },[])
-
 
    //console.log(buffer)
     return (
@@ -38,7 +39,6 @@ function FollowedList({ navigation }) {
     )}}></FlatList>
         </SafeAreaView>
     )
-
 }
 
 // class FollowedList extends Component {

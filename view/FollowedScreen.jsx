@@ -7,14 +7,12 @@ import FollowedList from './FollowedList';
 const Stack = createNativeStackNavigator();
 
 function FollowedScreen(){
-
       return (
         <Stack.Navigator initialRouteName="List">
           <Stack.Screen name="List" component={FollowedList} />
           <Stack.Screen name="SingleUser" component={FollowedUser} /> 
         </Stack.Navigator>
-      );
-    
+      ); 
   }
 
   export default FollowedScreen
