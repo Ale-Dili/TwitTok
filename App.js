@@ -66,11 +66,12 @@ function App() {
   const[sid, setSid]=React.useState()
 
   React.useEffect(()=>{
-    
-
     async function f(){
       helper = new Helper()
       result = await helper.getSid()
+      helper.checkAndRepairStorage()
+       helper.isPresent(1,1, result=>{console.log(result)})
+      //await helper.checkStorage()
       //console.log('sid: '+result)
       setSid(result)
     }

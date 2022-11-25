@@ -1,8 +1,13 @@
-import React, { Component } from 'react';
+import React, { Component, useEffect, useContext } from 'react';
 import { StyleSheet, Text, View, Dimensions, Image, TouchableOpacity } from 'react-native';
+import ContextUserInfo from '../ContextUserInfo';
+
 
 //MANCA POSIZIONAMENTO VERTICALE
 function TwokRow(props) {
+
+    const context = useContext(ContextUserInfo)
+    let helper = context.helper
 
     var twok = props.data.item;
     let fontSize = 15 + 10 * twok.fontsize;
@@ -49,6 +54,17 @@ function TwokRow(props) {
         },
 
     });
+
+    useEffect(() => {
+        if (!context.helper) {
+            return <ActivityIndicator size="small" color="#000000"></ActivityIndicator>
+        }
+        async function onMount() {
+            //await helper.getPicture(twok.uid)
+        }
+        onMount()
+    }, [context])
+
     return (
         <>
             <View style={styles.twokkerBar}>

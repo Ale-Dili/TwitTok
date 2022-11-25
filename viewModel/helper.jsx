@@ -1,8 +1,12 @@
 import { SafeAreaViewBase } from "react-native";
 import CommunicationController from "../model/CommunicationController"
 import KeyValueStorage from "../model/KeyValueStorage";
+import StorageManager
+ from "../model/StorageManager";
 class Helper {
     communicationController = new CommunicationController()
+    storageManager = new StorageManager()
+ 
     sid;
     constructor(sid) {
         this.sid = sid
@@ -49,10 +53,33 @@ class Helper {
         if(await KeyValueStorage.isFirstRun()){
             result = await this.communicationController.register()
             KeyValueStorage.setSid(result.sid)
+            
+
         }
             return await KeyValueStorage.getSid()
         
     }
+
+    checkAndRepairStorage(){
+        this.storageManager.checkAndRepair()
+    }
+
+    //ritorna immagine di profilo associata a quel uid, e pversion
+    //se la immagine salvata in locale è obsoleta o è assente, si occupa di risolvere
+    async getPicture(uid,pVersion){
+        console.log(this.sid)
+        var result = await this.communicationController.getPicture(this.sid,uid)
+        return result
+    }
+
+     isPresent(uid, pversion, onResult){
+        
+         this.storageManager.isPresent(uid, pversion,result=>onResult(result))
+
+    }
+
+    
+    
 
     
 }
