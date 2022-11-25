@@ -6,6 +6,8 @@ import TwoksBuffer from '../model/twoksBuffer';
 import Helper from '../viewModel/Helper';
 import { useEffect, useState, useContext } from 'react';
 import ContextUserInfo from '../ContextUserInfo';
+import following from '../assets/TwitTokImg/following.png'
+import notFollowing from '../assets/TwitTokImg/notFollowing.png'
 
 
 const styles = StyleSheet.create({
@@ -39,7 +41,8 @@ const sid = "KQW81h8HDaswwBIvBjG8"
 
 function User(props) {
 
-    const [state, setState] = useState({ twoksBuffer: new TwoksBuffer(), following:false, img:require('../assets/TwitTokImg/following.png')  })
+    const [state, setState] = useState({ twoksBuffer: new TwoksBuffer(), following: false})
+    const [img, setImg] = useState()
     //const [following, setFollowing] = useState(false)
 
 
@@ -54,20 +57,25 @@ function User(props) {
     useEffect(() => {
 
         async function onMount() {
+            
+            
             if (!context.sid) {
                 return <ActivityIndicator size="small" color="#000000"></ActivityIndicator>
             }
-            if (await helper.isFollowed(props.route.params.uid)){
-                state.following=true
-                state.img=require('../assets/TwitTokImg/following.png')
-            }else{
-                state.following=false
-                state.img=require('../assets/TwitTokImg/notFollowing.png')
-                
+            let imgTemp
+            if (await helper.isFollowed(props.route.params.uid)) {
+                state.following = true
+               imgTemp=following
+            } else {
+                state.following = false
+                imgTemp=notFollowing
+
             }
             for (var i = 0; i < 5; i++) {
                 state.twoksBuffer = await helper.addTwok(state.twoksBuffer, props.route.params.uid)
             }
+            console.log(state.img)
+            setImg(imgTemp)
             setState(state)
         }
         onMount()
@@ -75,27 +83,39 @@ function User(props) {
 
 
 
+
     async function loadData() {
-        state.twoksBuffer = await helper.addTwok(state.twoksBuffer,props.route.params.uid)
+        state.twoksBuffer = await helper.addTwok(state.twoksBuffer, props.route.params.uid)
         setState(state)
     }
 
     //gestisce il flag del follow
-    async function handlingFollow(){
-        if (state.following){
-            state.following=false
-            state.img=require('../assets/TwitTokImg/notFollowing.png')
+    async function handlingFollow() {
+        let imgTemp
+        if (state.following) {
+            state.following = false
+            imgTemp=notFollowing
             await helper.unfollow(props.route.params.uid)
-        }else{
-            state.following=true
-            state.img=require('../assets/TwitTokImg/following.png')
-            await helper.follow(props.route.params.uid) 
+        } else {
+            state.following = true
+            imgTemp=following
+            await helper.follow(props.route.params.uid)
         }
-
-        setState(state)
+       // console.log('foto cambiata in -> ' + state.img)
+        setImg(imgTemp)
     }
 
- 
+    function renderImage() {
+        //console.log('immagine da stampare '+state.img)
+        return (
+            <Image
+                style={{ height: 50, width: 50 }} 
+                source={img}
+            />
+        )
+    }
+
+    //console.log('foto renderizzata-> ' + state.img)
 
     return (
         <SafeAreaView style={{ flex: 1, justifyContent: 'center', alignItems: 'center', paddingTop: '20%' }}>
@@ -115,10 +135,7 @@ function User(props) {
                     style={styles.buttonStyle}
                     onPress={() => handlingFollow()}>
                     <View>
-                        <Image
-                            style={{ height: 50, width: 50 }}
-                            source={state.img}
-                        />
+                        {renderImage()}
                     </View>
                 </TouchableOpacity>
             </View>
