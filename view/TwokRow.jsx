@@ -71,7 +71,7 @@ function TwokRow(props) {
                 //console.log(pic)
                 setImg(pic)
             } else {
-                console.log('Utente ' + twok.uid + ' non ha foto')
+               // console.log('Utente ' + twok.uid + ' non ha foto')
                 setImg(defaultPic)
                 //console.log('Utente ' + twok.uid + ' non ha foto')
             }

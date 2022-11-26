@@ -66,6 +66,23 @@ export default class StorageManager {
 
     }
 
+    addProfilePicture=async (uid, pversion, pic) => {
+        return new Promise((resolve, reject) => {
+
+            this.db.transaction(tx => {
+                tx.executeSql('INSERT or REPLACE INTO UserPic (uid,pversion,pic) VALUES ("'+uid+'","'+pversion+'","'+pic+'")', [],
+                    (tx, result) => {
+                        resolve(result);
+                    },
+                    (tx,error)=>{
+                        
+                        reject(error)
+                    });
+            });
+        });
+
+    }
+
 
 
 }

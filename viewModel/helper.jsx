@@ -84,7 +84,12 @@ class Helper {
                     var base64regex = /^([A-Za-z0-9+/]{4})*([A-Za-z0-9+/]{3}=|[A-Za-z0-9+/]{2}==)?$/;
 
                     if (base64regex.test(pic)) {
-                        return 'data:image/png;base64,' + pic
+                        pic = 'data:image/png;base64,' + pic
+
+                         this.storageManager.addProfilePicture(uid,pversion,pic)
+
+                        return pic
+
                     } else {
                         console.log('bad b64 img encoding, using default')
                         return undefined
