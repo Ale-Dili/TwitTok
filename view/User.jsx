@@ -104,7 +104,7 @@ function User(props) {
     }
 
     function renderImage() {
-        //console.log('immagine da stampare '+state.img)
+        //e.log('immagine da stampare '+state.img)
         return (
             <Image
                 style={{ height: 50, width: 50 }} 

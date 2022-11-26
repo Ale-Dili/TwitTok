@@ -70,7 +70,7 @@ function FeedScreen(props) {
   }
 
   function navigate(uid){
-    console.log('uid:'+ uid)
+    console.log('uidNavigate to:'+ uid)
     props.navigation.navigate('SingleUser',{uid:uid})
 
   }

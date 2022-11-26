@@ -52,15 +52,6 @@ class CommunicationController {
         return result
     }
 
-    getPic = async(sid, uid)=> {
-        var param = JSON.stringify({ sid: sid, uid: uid })
-        var endpoint = "getPicture"
-        var result = await this.generalRequest(param, endpoint)
-        //console.log(result)
-        return result.picture
-    }
-
-
     async follow(sid, uid){
         var param = JSON.stringify({ sid: sid, uid: uid })
         var endpoint = "follow"

@@ -1,6 +1,7 @@
 import React, { Component, useEffect, useContext, useState } from 'react';
-import { StyleSheet, Text, View, Dimensions, Image, TouchableOpacity } from 'react-native';
+import { StyleSheet, Text, View, Dimensions, Image, TouchableOpacity, ActivityIndicator } from 'react-native';
 import ContextUserInfo from '../ContextUserInfo';
+import defaultPic from '../assets/TwitTokImg/defaultPic.png'
 
 
 //MANCA POSIZIONAMENTO VERTICALE
@@ -9,7 +10,7 @@ function TwokRow(props) {
     const context = useContext(ContextUserInfo)
     let helper = context.helper
 
-    const [img, setImg] = useState()
+    const [img, setImg] = useState(defaultPic)
 
     var twok = props.data.item;
     let fontSize = 15 + 10 * twok.fontsize;
@@ -59,22 +60,43 @@ function TwokRow(props) {
 
 
     useEffect(() => {
-        if (!context.helper) {
-            return <ActivityIndicator size="small" color="#000000"></ActivityIndicator>
-        }
+      //  console.log(context.sid)
+
         async function onMount() {
-            console.log(await helper.getPicture(twok.uid,twok.pversion))
+            if(!context.sid){       
+                return <ActivityIndicator size="small" color="#000000"></ActivityIndicator>
+            }
+            let pic = await helper.getPicture(twok.uid, twok.pversion)
+            if (pic) {
+                //console.log(pic)
+                setImg(pic)
+            } else {
+                console.log('Utente ' + twok.uid + ' non ha foto')
+                setImg(defaultPic)
+                //console.log('Utente ' + twok.uid + ' non ha foto')
+            }
         }
         onMount()
     }, [context])
 
     function renderImage() {
         //console.log('immagine da stampare '+state.img)
-        return (
-            <Image
-                style={{ height: 50, width: 50 }}
+        //console.log(img)
+        if (img === defaultPic){
+            //console.log('in teoira qui')
+
+            return (
+                <Image
+                style={styles.twokkerPic}
                 source={img}
             />
+            )
+        }
+        return (
+            <Image
+            style={styles.twokkerPic}
+            source={{uri:img}}
+        />
         )
     }
 
@@ -82,10 +104,7 @@ function TwokRow(props) {
     return (
         <>
             <View style={styles.twokkerBar}>
-                <Image
-                    style={styles.twokkerPic}
-                    source={require('../assets/TwitTokImg/defaultPic.png')}
-                />
+                {renderImage()}
                 <TouchableOpacity onPress={() => props.navigate(twok.uid)} disabled={props.touchDisabled}>
                     <Text style={styles.twokkerName}>{twok.name}</Text>
                 </TouchableOpacity>

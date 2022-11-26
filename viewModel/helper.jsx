@@ -1,8 +1,8 @@
 import { SafeAreaViewBase } from "react-native";
 import CommunicationController from "../model/CommunicationController"
 import KeyValueStorage from "../model/KeyValueStorage";
-import StorageManager
-    from "../model/StorageManager";
+import StorageManager from "../model/StorageManager";
+
 class Helper {
     communicationController = new CommunicationController()
     storageManager = new StorageManager()
@@ -69,13 +69,30 @@ class Helper {
 
 
     async getPicture(uid, pversion) {
-        console.log('uid: '+uid+' '+pversion)
+        
+        //console.log('uid: '+uid+' '+pversion)
         try {
-            let pic = await this.storageManager.getPictureIfPresent(uid,pversion)
-            if(pic){
+            let pic = await this.storageManager.getPictureIfPresent(uid, pversion)
+            if (pic) {
                 return pic
-            }else{
-                return 'Nessuna foto salvata'
+            } else {
+                let result = await this.communicationController.getPicture(this.sid, uid)
+                pic = result.picture
+                //se utente non ha foto profilo
+                if (pic) {
+                    //controllo se encoding è corretto
+                    var base64regex = /^([A-Za-z0-9+/]{4})*([A-Za-z0-9+/]{3}=|[A-Za-z0-9+/]{2}==)?$/;
+
+                    if (base64regex.test(pic)) {
+                        return 'data:image/png;base64,' + pic
+                    } else {
+                        console.log('bad b64 img encoding, using default')
+                        return undefined
+                    }
+                } else {
+                    return undefined
+                }
+
             }
         } catch (error) {
             console.log(error)
