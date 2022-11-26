@@ -47,7 +47,6 @@ function FeedScreen(props) {
   const context = useContext(ContextUserInfo) 
   let helper = context.helper
 
-  //console.log()
 
   useEffect(() => {
     async function onMount() {
@@ -71,7 +70,7 @@ function FeedScreen(props) {
   }
 
   function navigate(uid){
-    console.log(uid)
+    console.log('uid:'+ uid)
     props.navigation.navigate('SingleUser',{uid:uid})
 
   }

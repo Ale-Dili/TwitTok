@@ -1,4 +1,4 @@
-import React, { Component, useEffect, useContext } from 'react';
+import React, { Component, useEffect, useContext, useState } from 'react';
 import { StyleSheet, Text, View, Dimensions, Image, TouchableOpacity } from 'react-native';
 import ContextUserInfo from '../ContextUserInfo';
 
@@ -8,6 +8,8 @@ function TwokRow(props) {
 
     const context = useContext(ContextUserInfo)
     let helper = context.helper
+
+    const [img, setImg] = useState()
 
     var twok = props.data.item;
     let fontSize = 15 + 10 * twok.fontsize;
@@ -55,16 +57,28 @@ function TwokRow(props) {
 
     });
 
+
     useEffect(() => {
         if (!context.helper) {
             return <ActivityIndicator size="small" color="#000000"></ActivityIndicator>
         }
         async function onMount() {
-            //await helper.getPicture(twok.uid)
+            console.log(await helper.getPicture(twok.uid,twok.pversion))
         }
         onMount()
     }, [context])
 
+    function renderImage() {
+        //console.log('immagine da stampare '+state.img)
+        return (
+            <Image
+                style={{ height: 50, width: 50 }}
+                source={img}
+            />
+        )
+    }
+
+    //console.log('img:'+img)
     return (
         <>
             <View style={styles.twokkerBar}>

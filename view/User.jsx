@@ -52,7 +52,6 @@ function User(props) {
     //-----RICORDARSI CHE LE IMMAGINI NELLA VARIABILI BISOGNA METTERE IL REQUIRE
 
 
-    //console.log()
 
     useEffect(() => {
 
@@ -74,7 +73,6 @@ function User(props) {
             for (var i = 0; i < 5; i++) {
                 state.twoksBuffer = await helper.addTwok(state.twoksBuffer, props.route.params.uid)
             }
-            console.log(state.img)
             setImg(imgTemp)
             setState(state)
         }
