@@ -106,7 +106,14 @@ class Helper {
     }
 
 
+    async getProfile() {
+        return await this.communicationController.getProfile(this.sid)
+    }
 
+    async setProfile(name=null, picture=null){
+        await this.communicationController.setProfile(this.sid, name, picture)
+        console.log('Info user changed')
+    }
 
 
 }

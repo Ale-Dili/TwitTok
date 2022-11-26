@@ -88,5 +88,17 @@ class CommunicationController {
    
         return await this.generalRequest(param, endpoint) 
     }
+
+    async getProfile(sid){
+        var param = JSON.stringify({ sid: sid})
+        var endpoint = "getProfile"
+        return await this.generalRequest(param, endpoint) 
+    }
+
+    async setProfile(sid, name, pic){
+        var param = JSON.stringify({ sid: sid, name:name, picture:pic})
+        var endpoint = "setProfile"
+        return await this.generalRequest(param, endpoint) 
+    }
 }
 export default CommunicationController
