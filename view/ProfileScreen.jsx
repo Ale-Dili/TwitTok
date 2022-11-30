@@ -1,8 +1,9 @@
 import * as React from 'react';
-import { Text, SafeAreaView, ActivityIndicator, View, Image, StyleSheet, TouchableOpacity, Button, TextInput } from 'react-native';
+import { Text, SafeAreaView, ActivityIndicator, View, Image, StyleSheet, TouchableOpacity, Button, TextInput, TouchableWithoutFeedback, Keyboard, KeyboardAvoidingView } from 'react-native';
 import { useState, useEffect, useContext } from 'react';
 import defaultPic from '../assets/TwitTokImg/defaultPic.png'
 import ContextUserInfo from '../ContextUserInfo';
+
 
 const styles = StyleSheet.create({
   profileImg: {
@@ -15,6 +16,9 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     padding: 10,
   },
+  keyboardUp:{
+    flex:1
+  }
 })
 
 
@@ -31,16 +35,16 @@ function ProfileScreen() {
 
   useEffect(() => {
 
-      async function onMount() {
-          if(!context.sid){       
-              return <ActivityIndicator size="small" color="#000000"></ActivityIndicator>
-          }
-
-          let result = await helper.getProfile(context.sid)
-          setName(result.name)
-          setText(result.name)
+    async function onMount() {
+      if (!context.sid) {
+        return <ActivityIndicator size="small" color="#000000"></ActivityIndicator>
       }
-      onMount()
+
+      let result = await helper.getProfile(context.sid)
+      setName(result.name)
+      setText(result.name)
+    }
+    onMount()
   }, [context])
 
 
@@ -51,62 +55,74 @@ function ProfileScreen() {
   }
 
 
-  function cancelChanges(){
+  function cancelChanges() {
     console.log('changes cancelled')
+    setText(name)
     setIsChanged(false)
   }
 
-  function saveChanges(){
+  function saveChanges() {
     console.log('changes saved')
     helper.setProfile(text)
     setIsChanged(false)
     setName(text)
-    
+
   }
 
-  function renderButton(){
-    if(isChanged){
-      return(
-        <View>
-          <Button title='Cancel' onPress={(()=>{cancelChanges()})}></Button>
-          <Button title='Save' onPress={(()=>{saveChanges()})}></Button>
+  function renderButton() {
+    if (isChanged) {
+      return (
+        <View >
+          <Button title='Cancel' onPress={(() => { cancelChanges() })}></Button>
+          <Button title='Save' onPress={(() => { saveChanges() })}></Button>
         </View>
       )
     }
   }
 
-  function changeImg(){
+  function changeImg() {
     //...
     setIsChanged(true)
   }
 
-  function onChangeText(newText){
-    if(newText!==name){
+  function onChangeText(newText) {
+    console.log(name)
+    if (newText !== name) {
       setIsChanged(true)
-    }else{
+    } else {
       setIsChanged(false)
     }
     setText(newText)
   }
 
   return (
-    <SafeAreaView style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-      <View>
-        <TouchableOpacity onPress={()=>{changeImg()}}>
-          {renderImage()}
-        </TouchableOpacity>
-      </View>
-      <View>
-      <TextInput
-        style={styles.input}
-        onChangeText={(newText)=>onChangeText(newText)}
-        value={text}
-      />
-      </View>
-      {renderButton()}
+    <KeyboardAvoidingView behavior='padding' style={styles.keyboardUp} keyboardVerticalOffset={0}>
+    <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+      
+      <SafeAreaView style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+      
 
+        <View>
+          <TouchableOpacity onPress={() => { changeImg() }}>
+            {renderImage()}
+          </TouchableOpacity>
+        </View>
+        <View>
+          <TextInput
+            style={styles.input}
+            onChangeText={(newText) => onChangeText(newText)}
+            value={text}
+          />
+        </View>
+        {renderButton()}
 
-    </SafeAreaView>
+      
+      </SafeAreaView>
+
+    </TouchableWithoutFeedback>
+    </KeyboardAvoidingView>
+    
+
   );
 }
 

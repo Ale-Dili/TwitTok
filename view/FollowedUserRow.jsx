@@ -4,6 +4,7 @@ import TwokRow from "./TwokRow";
 import defaultPic from '../assets/TwitTokImg/defaultPic.png'
 import ContextUserInfo from '../ContextUserInfo';
 import { useContext, useEffect, useState } from "react";
+import { useFocusEffect } from "@react-navigation/native";
 
 const styles = StyleSheet.create({
     row: {
@@ -50,8 +51,6 @@ function FollowedUserRow(props) {
     var index = props.index
     //console.log(user.uid)
     useEffect(()=>{
-              //  console.log(context.sid)
-
               async function onMount() {
                 if(!context.sid){       
                     return <ActivityIndicator size="small" color="#000000"></ActivityIndicator>
@@ -67,7 +66,8 @@ function FollowedUserRow(props) {
                 }
             }
             onMount()
-    },[context])
+    },[user])
+
 
     function renderImage() {
             if (img === defaultPic) {
@@ -90,7 +90,8 @@ function FollowedUserRow(props) {
 
 
     }
-
+    
+    console.log('userRow ricaricato')
 
 
     return (

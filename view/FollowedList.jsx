@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { useState, useEffect, useContext } from 'react';
+import { useState, useEffect, useContext,useCallback } from 'react';
 import { Text, SafeAreaView, TouchableOpacity, FlatList } from 'react-native';
 import Helper from '../viewModel/Helper';
 import FollowedUserRow from './FollowedUserRow';
@@ -32,15 +32,18 @@ function FollowedList({ navigation }) {
         //console.log(state)
     }, [])
 
-    useFocusEffect(() => {
-        async function onFocus(){
-            var temp = await helper.getFollowed()
-            setBuffer(temp)
-        }
-        onFocus()
-    })
 
-    //console.log(buffer)
+    useFocusEffect(
+        useCallback(() => {
+            async function onFocus(){
+                var temp = await helper.getFollowed()
+                setBuffer(temp)
+            }
+            onFocus()
+        }, [])
+      );
+
+    console.log(buffer)
     return (
         <SafeAreaView style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
             <FlatList data={buffer} renderItem={({ item, index }) => {

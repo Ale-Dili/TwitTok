@@ -54,7 +54,6 @@ class Helper {
             result = await this.communicationController.register()
             KeyValueStorage.setSid(result.sid)
 
-
         }
         return await KeyValueStorage.getSid()
 
