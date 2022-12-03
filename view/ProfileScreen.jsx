@@ -16,8 +16,8 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     padding: 10,
   },
-  keyboardUp:{
-    flex:1
+  keyboardUp: {
+    flex: 1
   }
 })
 
@@ -102,31 +102,31 @@ function ProfileScreen() {
 
   return (
     <KeyboardAvoidingView behavior='padding' style={styles.keyboardUp} keyboardVerticalOffset={0}>
-    <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
-      
-      <SafeAreaView style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-      
+      <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
 
-        <View>
-          <TouchableOpacity onPress={() => { changeImg() }}>
-            {renderImage()}
-          </TouchableOpacity>
-        </View>
-        <View>
-          <TextInput
-            style={styles.input}
-            onChangeText={(newText) => onChangeText(newText)}
-            value={text}
-          />
-        </View>
-        {renderButton()}
+        <SafeAreaView style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
 
-      
-      </SafeAreaView>
 
-    </TouchableWithoutFeedback>
+          <View>
+            <TouchableOpacity onPress={() => { changeImg() }}>
+              {renderImage()}
+            </TouchableOpacity>
+          </View>
+          <View>
+            <TextInput
+              style={styles.input}
+              onChangeText={(newText) => onChangeText(newText)}
+              value={text}
+            />
+          </View>
+          {renderButton()}
+
+
+        </SafeAreaView>
+
+      </TouchableWithoutFeedback>
     </KeyboardAvoidingView>
-    
+
 
   );
 }

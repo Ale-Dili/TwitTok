@@ -9,16 +9,18 @@ import ContextUserInfo from '../ContextUserInfo';
 import FeedScreen from './FeedScreen';
 import User from './User';
 import Maps from './Maps.jsx'
+import AddTwok from './AddTwok';
 
 const Stack = createNativeStackNavigator();
 
-function HomeScreen(){
-    return (
-        <Stack.Navigator initialRouteName="Feed">
-          <Stack.Screen name="Feed" component={FeedScreen} options={{headerShown: false}}/>
-           <Stack.Screen name="SingleUser" component={User} />  
-          <Stack.Screen name= "Maps" component={Maps}/>
-        </Stack.Navigator>
-      ); 
+function HomeScreen() {
+  return (
+    <Stack.Navigator initialRouteName="Feed">
+      <Stack.Screen name="Feed" component={FeedScreen} options={{title: 'TwitTok',headerStyle: { backgroundColor: '#fcba03' }}} />
+      <Stack.Screen name="SingleUser" component={User} options={{title: 'TwitTwok',headerStyle: { backgroundColor: '#fcba03' }}}/>
+      <Stack.Screen name="Maps" component={Maps} options={{title: 'Twokked from...',headerStyle: { backgroundColor: '#fcba03' }}}/>
+      <Stack.Screen name="AddTwok" component={AddTwok} options={{title: 'New Twok',headerStyle: { backgroundColor: '#fcba03' }}}/>
+    </Stack.Navigator>
+  );
 }
 export default HomeScreen

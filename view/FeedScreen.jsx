@@ -6,6 +6,7 @@ import TwokRow from './TwokRow';
 import TwoksBuffer from '../model/twoksBuffer';
 import Helper from '../viewModel/Helper';
 import ContextUserInfo from '../ContextUserInfo';
+import AddTwok from './AddTwok';
 
 
 
@@ -87,7 +88,7 @@ function FeedScreen({props, navigation}) {
       <View style={{ bottom: '2%', position: "absolute" }}>
         <TouchableOpacity
           style={styles.buttonStyle}
-          onPress={() => setState(state)}>
+          onPress={() => navigation.navigate('AddTwok')}>
           <View>
             <Image
               style={{ height: 50, width: 50 }}

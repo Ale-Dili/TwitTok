@@ -63,6 +63,8 @@ function User(props) {
             if (!context.sid) {
                 return <ActivityIndicator size="small" color="#000000"></ActivityIndicator>
             }
+            console.log(props.route.params)
+            
             let imgTemp
             if (await helper.isFollowed(props.route.params.uid)) {
                 state.following = true

@@ -37,14 +37,15 @@ function MyTabs() {
           <Tab.Screen
             name="Followed"
             component={FollowedScreen}
-            options={{ tabBarLabel: 'Followed', headerStyle: { backgroundColor: '#fcba03' } }}
+            options={{ tabBarLabel: 'Followed', headerStyle: { backgroundColor: '#fcba03' },headerShown: false }}
           />
+
 
 
           <Tab.Screen
             name="TwikTok"
             component={HomeScreen}
-            options={{ tabBarLabel: 'TwikTok', headerStyle: { backgroundColor: '#fcba03' } }}
+            options={{ tabBarLabel: 'TwikTok', headerStyle: { backgroundColor: '#fcba03' },headerShown: false }}
           >
             {/* initialParams={{helper:helper}} . this.props.route.params */}
 

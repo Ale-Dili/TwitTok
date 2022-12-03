@@ -91,7 +91,6 @@ function FollowedUserRow(props) {
 
     }
     
-    console.log('userRow ricaricato')
 
 
     return (
