@@ -1,9 +1,9 @@
 import * as React from 'react';
-import { Text, SafeAreaView, ActivityIndicator, View, Image, StyleSheet, TouchableOpacity, Button, TextInput, TouchableWithoutFeedback, Keyboard, KeyboardAvoidingView } from 'react-native';
+import { Text, SafeAreaView, ActivityIndicator, View, Image, StyleSheet, TouchableOpacity, Button, TextInput, ImageBackground, TouchableWithoutFeedback, Keyboard, KeyboardAvoidingView } from 'react-native';
 import { useState, useEffect, useContext } from 'react';
 import defaultPic from '../assets/TwitTokImg/defaultPic.png'
 import ContextUserInfo from '../ContextUserInfo';
-
+import editPic from '../assets/TwitTokImg/edit.png'
 
 const styles = StyleSheet.create({
   profileImg: {
@@ -50,7 +50,12 @@ function ProfileScreen() {
 
   function renderImage() {
     return (
-      <Image style={styles.profileImg} source={defaultPic}></Image>
+      <ImageBackground style={styles.profileImg} source={defaultPic}>
+        {/* <Image source={editPic} style={{position:'absolute', right:0}}></Image> */}
+        <Text>{'Modifica'}</Text>
+
+      </ImageBackground>
+      // <Image style={styles.profileImg} source={defaultPic}></Image>
     )
   }
 

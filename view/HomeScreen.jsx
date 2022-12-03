@@ -8,7 +8,7 @@ import Helper from '../viewModel/Helper';
 import ContextUserInfo from '../ContextUserInfo';
 import FeedScreen from './FeedScreen';
 import User from './User';
-
+import Maps from './Maps.jsx'
 
 const Stack = createNativeStackNavigator();
 
@@ -16,7 +16,8 @@ function HomeScreen(){
     return (
         <Stack.Navigator initialRouteName="Feed">
           <Stack.Screen name="Feed" component={FeedScreen} options={{headerShown: false}}/>
-          <Stack.Screen name="SingleUser" component={User} /> 
+           <Stack.Screen name="SingleUser" component={User} />  
+          <Stack.Screen name= "Maps" component={Maps}/>
         </Stack.Navigator>
       ); 
 }

@@ -49,6 +49,8 @@ function User(props) {
     const context = useContext(ContextUserInfo)
     let helper = context.helper
 
+   
+
     //-----RICORDARSI CHE LE IMMAGINI NELLA VARIABILI BISOGNA METTERE IL REQUIRE
 
 
@@ -119,7 +121,7 @@ function User(props) {
         <SafeAreaView style={{ flex: 1, justifyContent: 'center', alignItems: 'center', paddingTop: '20%' }}>
             <SafeAreaView style={styles.container}>
                 <FlatList data={state.twoksBuffer.twoks}
-                    renderItem={(twok) => { return <TwokRow data={twok} helper={helper} touchDisabled={true} /> }}
+                    renderItem={(twok) => { return <TwokRow data={twok} helper={helper} navigation ={props.navigation} touchDisabled={true} /> }}
                     keyExtractor={(twok, index) => index}
                     snapToInterval={Dimensions.get('window').height}
                     snapToAlignment="start"

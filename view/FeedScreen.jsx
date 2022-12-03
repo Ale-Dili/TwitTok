@@ -40,7 +40,8 @@ const styles = StyleSheet.create({
 //const sid = "KQW81h8HDaswwBIvBjG8"
 //const helper = new Helper(sid)
 
-function FeedScreen(props) {
+function FeedScreen({props, navigation}) {
+  
   const [state, setState] = useState({ twoksBuffer: new TwoksBuffer(),})
 
   
@@ -69,16 +70,12 @@ function FeedScreen(props) {
     setState(state)
   }
 
-  function navigate(uid){
-    console.log('uidNavigate to:'+ uid)
-    props.navigation.navigate('SingleUser',{uid:uid})
 
-  }
   return (
     <SafeAreaView style={{ flex: 1, justifyContent: 'center', alignItems: 'center', paddingTop: '20%' }}>
       <SafeAreaView style={styles.container}>
         <FlatList data={state.twoksBuffer.twoks}
-          renderItem={(twok) => { return <TwokRow data={twok} helper={helper} navigate={navigate} touchDisabled={false}/> }}
+          renderItem={(twok) => { return <TwokRow data={twok} helper={helper} navigation={navigation} touchDisabled={false}/> }}
           keyExtractor={(twok, index) => index}
           snapToInterval={Dimensions.get('window').height}
           snapToAlignment="start"
