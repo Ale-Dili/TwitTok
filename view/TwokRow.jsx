@@ -19,7 +19,13 @@ function TwokRow(props) {
 
 
     var twok = props.data.item;
-    let fontSize = 15 + 10 * twok.fontsize;
+    let fontSize
+    if (twok.fontsize > 2) {
+        
+        fontSize = 15 + 20
+    } else {
+        fontSize = 15 + 10 * twok.fontsize;
+    }
 
 
     const styles = StyleSheet.create({
@@ -28,11 +34,13 @@ function TwokRow(props) {
             height: Dimensions.get('window').height - 80 - 2,
             backgroundColor: "#" + twok.bgcol,
             alignItems: getTextAlign(twok.halign),
+
         },
         textStyle: {
             fontWeight: "700",
             color: "#" + twok.fontcol,
             fontSize: fontSize,
+
 
         },
         twokkerBar: {
@@ -140,11 +148,11 @@ function TwokRow(props) {
             <View style={styles.line}></View>
 
             <View style={[styles.twokStyle]}>
-                <View style={styles.verticalTextPositioning}>
 
+                <View style={{ top: getVerticalPositioning(twok.valign) }}>
                     <Text style={[styles.textStyle,]}>{twok.text}</Text>
-
                 </View>
+
 
             </View>
         </View>
@@ -174,9 +182,12 @@ function getTextAlign(halign) {
 }
 
 function getVerticalPositioning(valign) {
-    // valign += 1
+    if (valign > 2) {
+        valign = 2
+    }
+    let top = valign * 15
     // var value = 40 + valign * 10
-    return { top: '20%' }
+    return top + '%'
 }
 
 
