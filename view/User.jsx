@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { SafeAreaView, View, TouchableOpacity, Image, StyleSheet, Dimensions, FlatList } from 'react-native';
+import { SafeAreaView, View, TouchableOpacity, Image, StyleSheet, Dimensions, FlatList, ActivityIndicator } from 'react-native';
 import { Component } from 'react';
 import TwokRow from './TwokRow';
 import TwoksBuffer from '../model/twoksBuffer';
@@ -43,6 +43,7 @@ function User(props) {
 
     const [state, setState] = useState({ twoksBuffer: new TwoksBuffer(), following: false})
     const [img, setImg] = useState()
+    const [waiting, setWaiting] = useState(true)
     //const [following, setFollowing] = useState(false)
 
 
@@ -60,10 +61,11 @@ function User(props) {
         async function onMount() {
             
             
-            if (!context.sid) {
-                return <ActivityIndicator size="small" color="#000000"></ActivityIndicator>
+            if (!context.sid && wait) {
+                console.log('loading')
+                return
             }
-            console.log(props.route.params)
+            
             
             let imgTemp
             if (await helper.isFollowed(props.route.params.uid)) {
@@ -77,8 +79,11 @@ function User(props) {
             for (var i = 0; i < 5; i++) {
                 state.twoksBuffer = await helper.addTwok(state.twoksBuffer, props.route.params.uid)
             }
+            console.log(state.following)
+            
             setImg(imgTemp)
             setState(state)
+            setWaiting(false)
         }
         onMount()
     }, [context])
@@ -118,6 +123,12 @@ function User(props) {
     }
 
     //console.log('foto renderizzata-> ' + state.img)
+    if (waiting) {
+        return (
+          <SafeAreaView style={{ flex: 1, justifyContent: 'center', alignItems: 'center', paddingTop: '20%' }}>
+            <ActivityIndicator size="small" color="#0000ff" />
+          </SafeAreaView>)
+      }
 
     return (
         <SafeAreaView style={{ flex: 1, justifyContent: 'center', alignItems: 'center', paddingTop: '20%' }}>

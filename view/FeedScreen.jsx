@@ -41,42 +41,57 @@ const styles = StyleSheet.create({
 //const sid = "KQW81h8HDaswwBIvBjG8"
 //const helper = new Helper(sid)
 
-function FeedScreen({props, navigation}) {
-  
-  const [state, setState] = useState({ twoksBuffer: new TwoksBuffer(),})
+function FeedScreen({ props, navigation }) {
 
-  
-  const context = useContext(ContextUserInfo) 
+  const [state, setState] = useState(new TwoksBuffer())
+  const [waiting, setWaiting] = useState(true)
+
+
+  const context = useContext(ContextUserInfo)
   let helper = context.helper
+
 
 
   useEffect(() => {
     async function onMount() {
-      if(!context.sid){       
-        return <ActivityIndicator size="small" color="#000000"></ActivityIndicator>
+      if (!context.sid) {
+        console.log('caricamento in teoriea')
+        return
       }
 
+      let stateTemp = new TwoksBuffer
       for (var i = 0; i < 5; i++) {
-        state.twoksBuffer = await helper.addTwok(state.twoksBuffer)
+        stateTemp = await helper.addTwok(stateTemp)
       }
-      setState(state)
+      setWaiting(false)
+      setState(stateTemp)
     }
+    
     onMount()
-  },[context])
+  }, [context])
 
 
 
   async function loadData() {
-    state.twoksBuffer = await helper.addTwok(state.twoksBuffer)
-    setState(state)
+    let stateTemp = state
+    stateTemp = await helper.addTwok(stateTemp)
+    setState(stateTemp)
   }
 
+
+  if (waiting) {
+    return (
+      <SafeAreaView style={{ flex: 1, justifyContent: 'center', alignItems: 'center', paddingTop: '20%' }}>
+        <ActivityIndicator size="small" color="#0000ff" />
+        <Text>{'If this take too long, please check your connectivity'}</Text>
+      </SafeAreaView>)
+  }
 
   return (
     <SafeAreaView style={{ flex: 1, justifyContent: 'center', alignItems: 'center', paddingTop: '20%' }}>
       <SafeAreaView style={styles.container}>
-        <FlatList data={state.twoksBuffer.twoks}
-          renderItem={(twok) => { return <TwokRow data={twok} helper={helper} navigation={navigation} touchDisabled={false}/> }}
+        <FlatList data={state.twoks}
+          renderItem={(twok) => { return <TwokRow data={twok} helper={helper} navigation={navigation} touchDisabled={false} /> }}
           keyExtractor={(twok, index) => index}
           snapToInterval={Dimensions.get('window').height}
           snapToAlignment="start"

@@ -1,6 +1,6 @@
 import * as React from 'react';
-import { useState, useEffect, useContext,useCallback } from 'react';
-import { Text, SafeAreaView, TouchableOpacity, FlatList } from 'react-native';
+import { useState, useEffect, useContext, useCallback } from 'react';
+import { Text, SafeAreaView, TouchableOpacity, FlatList, ActivityIndicator } from 'react-native';
 import Helper from '../viewModel/Helper';
 import FollowedUserRow from './FollowedUserRow';
 import ContextUserInfo from '../ContextUserInfo';
@@ -15,15 +15,19 @@ function FollowedList({ navigation }) {
 
 
     const [buffer, setBuffer] = useState([])
+    const [waiting, setWaiting] = useState(true)
 
 
     useEffect(() => {
 
         async function onMount() {
             if (!context.sid) {
-                return <ActivityIndicator size="small" color="#000000"></ActivityIndicator>
+                console.log('loading')
+                return
             }
+
             var temp = await helper.getFollowed()
+            setWaiting(false)
             setBuffer(temp)
         }
 
@@ -35,15 +39,22 @@ function FollowedList({ navigation }) {
 
     useFocusEffect(
         useCallback(() => {
-            async function onFocus(){
+            async function onFocus() {
                 var temp = await helper.getFollowed()
                 setBuffer(temp)
             }
             onFocus()
         }, [])
-      );
+    );
 
-    console.log(buffer)
+
+    if (waiting) {
+        return (
+            <SafeAreaView style={{ flex: 1, justifyContent: 'center', alignItems: 'center', paddingTop: '20%' }}>
+                <ActivityIndicator size="small" color="#0000ff" />
+                <Text>{'If this take too long, please check your connectivity'}</Text>
+            </SafeAreaView>)
+    }
     return (
         <SafeAreaView style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
             <FlatList data={buffer} renderItem={({ item, index }) => {

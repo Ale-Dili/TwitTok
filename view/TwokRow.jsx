@@ -21,7 +21,7 @@ function TwokRow(props) {
     var twok = props.data.item;
     let fontSize
     if (twok.fontsize > 2) {
-        
+
         fontSize = 15 + 20
     } else {
         fontSize = 15 + 10 * twok.fontsize;
@@ -33,13 +33,14 @@ function TwokRow(props) {
             width: Dimensions.get('window').width,
             height: Dimensions.get('window').height - 80 - 2,
             backgroundColor: "#" + twok.bgcol,
-            alignItems: getTextAlign(twok.halign),
+
 
         },
         textStyle: {
             fontWeight: "700",
             color: "#" + twok.fontcol,
             fontSize: fontSize,
+            textAlign: getTextAlign(twok.halign)
 
 
         },
@@ -149,10 +150,13 @@ function TwokRow(props) {
 
             <View style={[styles.twokStyle]}>
 
-                <View style={{ top: getVerticalPositioning(twok.valign) }}>
-                    <Text style={[styles.textStyle,]}>{twok.text}</Text>
-                </View>
 
+                {/* <View style={{ top: getVerticalPositioning(twok.valign) }}> */}
+                <View style={{ width: '100%', height: '65%', justifyContent: getAlign(twok.valign) }}>
+                    <View style={{alignItems:getAlign(twok.halign) }}>
+                        <Text style={[styles.textStyle,]}>{twok.text}</Text>
+                    </View>
+                </View>
 
             </View>
         </View>
@@ -164,8 +168,8 @@ function TwokRow(props) {
 
 
 //ritorna left in caso di errore del dato
-function getTextAlign(halign) {
-    switch (halign) {
+function getAlign(align) {
+    switch (align) {
         case 0:
             return 'flex-start'
             break;
@@ -176,21 +180,27 @@ function getTextAlign(halign) {
             return 'flex-end'
             break;
         default:
+            return 'flext-start'
+
+    }
+}
+
+function getTextAlign(halign){
+    switch (halign) {
+        case 0:
+            return 'left'
+            break;
+        case 1:
+            return 'center'
+            break;
+        case 2:
+            return 'right'
+            break;
+        default:
             return 'left'
 
     }
 }
-
-function getVerticalPositioning(valign) {
-    if (valign > 2) {
-        valign = 2
-    }
-    let top = valign * 15
-    // var value = 40 + valign * 10
-    return top + '%'
-}
-
-
 
 
 export default TwokRow;
