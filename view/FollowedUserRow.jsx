@@ -94,7 +94,7 @@ function FollowedUserRow(props) {
 
 
     return (
-        <TouchableOpacity onPress={() => (props.navigation.navigate('SingleUser', { uid: user.uid }))}>
+        <TouchableOpacity onPress={() => (props.navigation.navigate('SingleUser', { uid: user.uid, name:user.name }))}>
             <View style={styles.twokkerBar}>
                 {renderImage()}
                 <Text style={styles.twokkerName}>

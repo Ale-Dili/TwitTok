@@ -2,13 +2,14 @@ import React, { Component, useEffect, useContext, useState } from 'react';
 import { StyleSheet, Text, View, Dimensions, Image, TouchableOpacity, ActivityIndicator } from 'react-native';
 import ContextUserInfo from '../ContextUserInfo';
 import defaultPic from '../assets/TwitTokImg/defaultPic.png'
-import MapView from 'react-native-maps';
+import pin from '../assets/TwitTokImg/pin.png'
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 
 
 const Stack = createNativeStackNavigator();
 //MANCA POSIZIONAMENTO VERTICALE
 function TwokRow(props) {
+
 
 
     const context = useContext(ContextUserInfo)
@@ -28,6 +29,7 @@ function TwokRow(props) {
     }
 
 
+
     const styles = StyleSheet.create({
         twokStyle: {
             width: Dimensions.get('window').width,
@@ -40,7 +42,8 @@ function TwokRow(props) {
             fontWeight: "700",
             color: "#" + twok.fontcol,
             fontSize: fontSize,
-            textAlign: getTextAlign(twok.halign)
+            textAlign: getTextAlign(twok.halign),
+            fontFamily: getTextFontFamily(twok.fonttype)
 
 
         },
@@ -80,7 +83,6 @@ function TwokRow(props) {
 
 
     useEffect(() => {
-        //  console.log(context.sid)
 
         async function onMount() {
             if (!context.sid) {
@@ -88,22 +90,17 @@ function TwokRow(props) {
             }
             let pic = await helper.getPicture(twok.uid, twok.pversion)
             if (pic) {
-                //console.log(pic)
                 setImg(pic)
             } else {
-                // console.log('Utente ' + twok.uid + ' non ha foto')
                 setImg(defaultPic)
-                //console.log('Utente ' + twok.uid + ' non ha foto')
             }
         }
         onMount()
     }, [context])
 
     function renderImage() {
-        //console.log('immagine da stampare '+state.img)
-        //console.log(img)
         if (img === defaultPic) {
-            //console.log('in teoira qui')
+
 
             return (
                 <Image
@@ -127,7 +124,10 @@ function TwokRow(props) {
             return (
 
                 <TouchableOpacity onPress={() => props.navigation.navigate('Maps', { twok: twok })}>
-                    <Text>{'posizione'}</Text>
+                    
+                        <Image style={styles.twokkerPic} source={pin}></Image>
+                    
+
                 </TouchableOpacity>
             )
         }
@@ -140,7 +140,7 @@ function TwokRow(props) {
                 {renderImage()}
                 {renderMaps()}
 
-                <TouchableOpacity onPress={() => { props.navigation.navigate('SingleUser', { uid: twok.uid }) }} disabled={props.touchDisabled}>
+                <TouchableOpacity onPress={() => { props.navigation.navigate('SingleUser', { uid: twok.uid, name: twok.name }) }} disabled={props.touchDisabled}>
                     <Text style={styles.twokkerName}>{twok.name}</Text>
                 </TouchableOpacity>
 
@@ -153,7 +153,7 @@ function TwokRow(props) {
 
                 {/* <View style={{ top: getVerticalPositioning(twok.valign) }}> */}
                 <View style={{ width: '100%', height: '65%', justifyContent: getAlign(twok.valign) }}>
-                    <View style={{alignItems:getAlign(twok.halign) }}>
+                    <View style={{ alignItems: getAlign(twok.halign) }}>
                         <Text style={[styles.textStyle,]}>{twok.text}</Text>
                     </View>
                 </View>
@@ -185,7 +185,7 @@ function getAlign(align) {
     }
 }
 
-function getTextAlign(halign){
+function getTextAlign(halign) {
     switch (halign) {
         case 0:
             return 'left'
@@ -202,5 +202,21 @@ function getTextAlign(halign){
     }
 }
 
+function getTextFontFamily(fonttype){
+    switch (fonttype) {
+        case 0:
+            return 'System'
+            break;
+        case 1:
+            return 'Futura'
+            break;
+        case 2:
+            return 'Courier New'
+            break;
+        default:
+            return 'System'
+
+    }
+}
 
 export default TwokRow;

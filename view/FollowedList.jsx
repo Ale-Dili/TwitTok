@@ -55,6 +55,14 @@ function FollowedList({ navigation }) {
                 <Text>{'If this take too long, please check your connectivity'}</Text>
             </SafeAreaView>)
     }
+    if (buffer.length == 0) {
+
+        return (
+            <SafeAreaView  style={{alignItems:'center',justifyContent: 'center', flex:1}}>
+                <Text>{'You are not following anyone'}</Text>
+            </SafeAreaView>
+        )
+    }
     return (
         <SafeAreaView style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
             <FlatList data={buffer} renderItem={({ item, index }) => {

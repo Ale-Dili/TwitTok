@@ -41,7 +41,7 @@ const sid = "KQW81h8HDaswwBIvBjG8"
 
 function User(props) {
 
-    const [state, setState] = useState({ twoksBuffer: new TwoksBuffer(), following: false})
+    const [state, setState] = useState({ twoksBuffer: new TwoksBuffer(), following: false })
     const [img, setImg] = useState()
     const [waiting, setWaiting] = useState(true)
     //const [following, setFollowing] = useState(false)
@@ -50,7 +50,10 @@ function User(props) {
     const context = useContext(ContextUserInfo)
     let helper = context.helper
 
-   
+    //console.log('we are looking at: '+props.route.params.name)
+    console.log(props.route)
+
+
 
     //-----RICORDARSI CHE LE IMMAGINI NELLA VARIABILI BISOGNA METTERE IL REQUIRE
 
@@ -59,28 +62,34 @@ function User(props) {
     useEffect(() => {
 
         async function onMount() {
-            
-            
+
+
             if (!context.sid && wait) {
                 console.log('loading')
                 return
             }
-            
-            
+
+
             let imgTemp
             if (await helper.isFollowed(props.route.params.uid)) {
                 state.following = true
-               imgTemp=following
+                imgTemp = following
             } else {
                 state.following = false
-                imgTemp=notFollowing
+                imgTemp = notFollowing
 
             }
             for (var i = 0; i < 5; i++) {
                 state.twoksBuffer = await helper.addTwok(state.twoksBuffer, props.route.params.uid)
             }
             console.log(state.following)
-            
+
+            props.navigation.setOptions({ title: props.route.params.name + "\'s profile", })
+            props.navigation.setOptions({
+                tabBarStyle: { display: 'none' },
+            });
+
+
             setImg(imgTemp)
             setState(state)
             setWaiting(false)
@@ -101,14 +110,14 @@ function User(props) {
         let imgTemp
         if (state.following) {
             state.following = false
-            imgTemp=notFollowing
+            imgTemp = notFollowing
             await helper.unfollow(props.route.params.uid)
         } else {
             state.following = true
-            imgTemp=following
+            imgTemp = following
             await helper.follow(props.route.params.uid)
         }
-       // console.log('foto cambiata in -> ' + state.img)
+        // console.log('foto cambiata in -> ' + state.img)
         setImg(imgTemp)
     }
 
@@ -116,7 +125,7 @@ function User(props) {
         //e.log('immagine da stampare '+state.img)
         return (
             <Image
-                style={{ height: 50, width: 50 }} 
+                style={{ height: 50, width: 50 }}
                 source={img}
             />
         )
@@ -125,16 +134,16 @@ function User(props) {
     //console.log('foto renderizzata-> ' + state.img)
     if (waiting) {
         return (
-          <SafeAreaView style={{ flex: 1, justifyContent: 'center', alignItems: 'center', paddingTop: '20%' }}>
-            <ActivityIndicator size="small" color="#0000ff" />
-          </SafeAreaView>)
-      }
+            <SafeAreaView style={{ flex: 1, justifyContent: 'center', alignItems: 'center', paddingTop: '20%' }}>
+                <ActivityIndicator size="small" color="#0000ff" />
+            </SafeAreaView>)
+    }
 
     return (
         <SafeAreaView style={{ flex: 1, justifyContent: 'center', alignItems: 'center', paddingTop: '20%' }}>
             <SafeAreaView style={styles.container}>
                 <FlatList data={state.twoksBuffer.twoks}
-                    renderItem={(twok) => { return <TwokRow data={twok} helper={helper} navigation ={props.navigation} touchDisabled={true} /> }}
+                    renderItem={(twok) => { return <TwokRow data={twok} helper={helper} navigation={props.navigation} touchDisabled={true} /> }}
                     keyExtractor={(twok, index) => index}
                     snapToInterval={Dimensions.get('window').height}
                     snapToAlignment="start"
@@ -157,61 +166,5 @@ function User(props) {
 }
 
 
-
-// class User extends Component {
-//     helper
-//     uid
-
-//     state = {
-//         twoksBuffer: new TwoksBuffer(),
-//     }
-
-//     async loadData() {
-//         this.state.twoksBuffer = await this.helper.addTwok(this.state.twoksBuffer,this.uid )
-//         this.setState(this.state)
-//     }
-
-//     async componentDidMount() {
-//         this.uid=this.props.route.params.uid
-//         this.helper = new Helper(sid)
-//         for (var i = 0; i < 5; i++) {
-//             this.state.twoksBuffer = await this.helper.addTwok(this.state.twoksBuffer,this.uid)
-//         }
-//         this.setState(this.state)
-//     }
-
-//     render() {
-
-//         //console.log("render called")
-//         //console.log(this.state.twoksBuffer.twoks)
-//         return (
-//             <SafeAreaView style={{ flex: 1, justifyContent: 'center', alignItems: 'center', paddingTop: '20%' }}>
-//                 <SafeAreaView style={styles.container}>
-//                     <FlatList data={this.state.twoksBuffer.twoks}
-//                         renderItem={(twok) => { return <TwokRow data={twok} helper={this.helper} touchDisabled={true}/> }}
-//                         keyExtractor={(twok, index) => index}
-//                         snapToInterval={Dimensions.get('window').height}
-//                         snapToAlignment="start"
-//                         decelerationRate="fast"
-//                         onScrollEndDrag={() => this.loadData()}
-//                     />
-
-//                 </SafeAreaView>
-//                 <View style={{ bottom: '2%', position: "absolute" }}>
-//                     <TouchableOpacity
-//                         style={styles.buttonStyle}
-//                         onPress={() => this.setState(this.state)}>
-//                         <View>
-//                             <Image
-//                                 style={{ height: 50, width: 50 }}
-//                                 source={require('../assets/TwitTokImg/notFollowing.png')}
-//                             />
-//                         </View>
-//                     </TouchableOpacity>
-//                 </View>
-//             </SafeAreaView>
-//         );
-//     }
-// }
 export default User
 

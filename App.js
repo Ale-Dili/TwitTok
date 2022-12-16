@@ -53,7 +53,7 @@ function MyTabs() {
           <Tab.Screen
             name="Profile"
             component={ProfileScreen}
-            options={{ tabBarLabel: 'Profile', headerStyle: { backgroundColor: '#fcba03' } }}
+            options={{ tabBarLabel: 'Profile', headerStyle: { backgroundColor: '#fcba03' },}}
           />
         </Tab.Navigator>
 
