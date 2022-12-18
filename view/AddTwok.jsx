@@ -1,8 +1,9 @@
 import { Text, View, TextInput, StyleSheet, TouchableWithoutFeedback, Keyboard, KeyboardAvoidingView, TouchableOpacity, Image, SafeAreaView, ActivityIndicator, Button } from "react-native"
-import { useContext, useEffect, useState } from "react"
+import { useContext, useEffect, useRef, useState } from "react"
 import ContextUserInfo from "../ContextUserInfo"
 import textColoring from '../assets/TwitTokImg/text-coloring.png'
 import post from '../assets/TwitTokImg/post.png'
+import colors from "../assets/colors"
 
 
 
@@ -20,6 +21,10 @@ export default function AddTwok() {
     const [textColor, setTextColor] = useState('000000')
     const [backgroundColor, setBackgroundColor] = useState('FFFFFF')
 
+    const [valign, setValign] = useState(0)
+    const [halign, setHalign] = useState(0)
+
+
     const [waiting, setWaiting] = useState(true)
     const [page, setPage] = useState(1)  // 1 -> text / 2-> color / 3->positioning / 3-> post twok
     const styles = StyleSheet.create({
@@ -31,23 +36,26 @@ export default function AddTwok() {
             height: 300,
             margin: 12,
             borderWidth: 1,
-            padding: 10,
+            padding: 5,
             borderRadius: 10,
-            backgroundColor:'#'+backgroundColor
+            backgroundColor: '#' + backgroundColor,
+            justifyContent:getAlign(valign),
+            alignItems:getAlign(halign)
+
 
         },
         textPreview: {
             fontWeight: '700',
             fontSize: renderFontSize(),
             fontFamily: renderFonttype(),
-            color: '#'+textColor,
+            color: '#' + textColor,
+            textAlign: getTextAlign(halign)
         },
         keyboardUp: {
             flex: 1
         },
         twokOption: {
-
-            backgroundColor: '#4502b0',
+            backgroundColor: colors.coral,
             height: '100%',
             justifyContent: 'center',
             alignItems: 'center',
@@ -57,7 +65,7 @@ export default function AddTwok() {
 
         },
         twokOptionButton: {
-            color: '#fcba03',
+            color: colors.blue,
             fontWeight: "700",
 
         },
@@ -83,17 +91,34 @@ export default function AddTwok() {
             fontWeight: '700',
             fontSize: 23,
             margin: 10,
-            borderColor: '#4502b0',
-            padding: 10
+            borderColor: colors.coral,
+            padding: 10,
+            color: colors.blue
 
         },
+        colorInputText: {
+            width: '100%',
+            height: '50%',
+            flex: 1,
+            position: 'relative',
+
+            borderRadius: 10,
+            borderWidth: 3,
+            fontWeight: '700',
+            fontSize: 23,
+            margin: 10,
+            borderColor: colors.coral,
+            padding: 10,
+            color: colors.blue
+        },
         screen: {
-            flex: 6
+            flex: 6,
+            margin: 10
         },
         label: {
             fontWeight: "700",
             fontSize: 18,
-            color: '#4502b0'
+            color: colors.blue
         }
 
     })
@@ -142,6 +167,7 @@ export default function AddTwok() {
     function renderFontSize() {
         return 15 + 10 * fontSize
     }
+
     //----------------------------
 
 
@@ -158,8 +184,10 @@ export default function AddTwok() {
                                 style={styles.inputTextTwok}
                                 onChangeText={(newText) => setText(newText)}
                                 value={text}
-                                multiline={true}
+
                                 maxLength={100}
+                                onBlur={() => console.log('blur')}
+                                placeholder={text}
                             />
                         </View>
                         <View style={{ flex: 1, flexDirection: 'row', alignItems: 'center', }}>
@@ -199,37 +227,151 @@ export default function AddTwok() {
                 )
                 break;
             case 2:
+                console.log('bg-' + backgroundColor)
+                console.log('t-' + textColor)
                 return (
                     <View style={styles.textOptionScreen}>
-                        <View style={{ flex: 2, flexDirection: 'row', }}>
+                        <View style={{ flex: 2, flexDirection: 'row', alignItems: 'center' }}>
                             <View style={{ justifyContent: 'center' }}>
-                                <Text style={styles.label}>{'Text Color'}</Text>
+                                <Text style={styles.label}>{'Background Color   #'}</Text>
                             </View>
                             <TextInput
-                                style={styles.inputTextTwok}
-                                onChangeText={(newText) => setText(newText)}
-                                value={text}
-                                placeholder={'000000'}
+                                style={styles.colorInputText}
+                                onChangeText={(newBackgroundColor) => {
+                                    if (checkIfColor(newBackgroundColor)) {
+                                        setBackgroundColor(newBackgroundColor)
+                                    } else {
+
+                                    }
+
+                                }}
+                                defaultValue={backgroundColor}
+
+                                placeholder={backgroundColor}
                                 maxLength={6}
+                                onBlur={() => console.log('blur')}
                             />
                         </View>
-                        <View style={{ flex: 2, flexDirection: 'row', }}>
+                        <View style={{ flex: 2, flexDirection: 'row', alignItems: 'center' }}>
                             <View style={{ justifyContent: 'center' }}>
-                                <Text style={styles.label}>{'Back'}</Text>
+                                <Text style={styles.label}>{'Text Color                    #'}</Text>
                             </View>
                             <TextInput
-                                style={styles.inputTextTwok}
-                                onChangeText={(newText) => setText(newText)}
-                                value={text}
-                                placeholder={'FFFFFF'}
+                                style={styles.colorInputText}
+                                onChangeText={(newTextColor) => {
+                                    if (checkIfColor(newTextColor)) {
+                                        setTextColor(newTextColor)
+                                    } else {
+
+                                    }
+
+                                }}
+                                defaultValue={textColor}
+                                placeholder={textColor}
                                 maxLength={6}
+                                onBlur={() => console.log('blur')}
                             />
                         </View>
+
                     </View>
                 )
                 break;
             case 3:
+                return (
+                    <View style={{ flex: 1, }}>
+                        <View style={{ flex: 1, flexDirection: 'row' }}>
+                            <TouchableOpacity style={{flex:1 ,borderWidth:2, borderColor: 'purple'}} onPress={() => {
+                                setValign(0)
+                                setHalign(0)
+                            }}>
 
+                                <View style={{ flex: 1, backgroundColor: 'skyblue' }}>
+
+                                </View>
+                            </TouchableOpacity>
+                            <TouchableOpacity style={{flex:1 ,borderWidth:2, borderColor: 'purple'}} onPress={() => {
+                                setValign(0)
+                                setHalign(1)
+                            }}>
+
+                                <View style={{ flex: 1, backgroundColor: 'orange' }}>
+
+                                </View>
+                            </TouchableOpacity>
+                            <TouchableOpacity style={{flex:1 ,borderWidth:2, borderColor: 'purple'}} onPress={() => {
+                                setValign(0)
+                                setHalign(2)
+                            }}>
+
+                                <View style={{ flex: 1, backgroundColor: 'red' }}>
+
+                                </View>
+                            </TouchableOpacity>
+                            
+                        </View>
+                        <View style={{ flex: 1, flexDirection: 'row' }}>
+                        <TouchableOpacity style={{flex:1 , borderWidth:2, borderColor: 'purple'}} onPress={() => {
+                                setValign(1)
+                                setHalign(0)
+                            }}>
+
+                                <View style={{ flex: 1, backgroundColor: 'purple' }}>
+
+                                </View>
+                            </TouchableOpacity>
+                            <TouchableOpacity style={{flex:1 ,borderWidth:2, borderColor: 'purple'}} onPress={() => {
+                                setValign(1)
+                                setHalign(1)
+                            }}>
+
+                                <View style={{ flex: 1, backgroundColor: 'orange' }}>
+
+                                </View>
+                            </TouchableOpacity>
+                            <TouchableOpacity style={{flex:1,borderWidth:2, borderColor: 'purple' }} onPress={() => {
+                                setValign(1)
+                                setHalign(2)
+                            }}>
+
+                                <View style={{ flex: 1, backgroundColor: 'red' }}>
+
+                                </View>
+                            </TouchableOpacity>
+
+                        </View>
+                        <View style={{ flex: 1,  flexDirection: 'row' }}>
+                        <TouchableOpacity style={{flex:1,borderWidth:2, borderColor: 'purple' }} onPress={() => {
+                                setValign(2)
+                                setHalign(0)
+                            }}>
+
+                                <View style={{ flex: 1, backgroundColor: 'purple' }}>
+
+                                </View>
+                            </TouchableOpacity>
+                            <TouchableOpacity style={{flex:1 ,borderWidth:2, borderColor: 'purple'}} onPress={() => {
+                                setValign(2)
+                                setHalign(1)
+                            }}>
+
+                                <View style={{ flex: 1, backgroundColor: 'orange' }}>
+
+                                </View>
+                            </TouchableOpacity>
+                            <TouchableOpacity style={{flex:1 ,borderWidth:2, borderColor: 'purple'}} onPress={() => {
+                                setValign(2)
+                                setHalign(2)
+                            }}>
+
+                                <View style={{ flex: 1, backgroundColor: 'red' }}>
+
+                                </View>
+                            </TouchableOpacity>
+
+                        </View>
+
+                    </View>
+                )
                 break;
             case 4:
 
@@ -241,7 +383,7 @@ export default function AddTwok() {
 
     }
     return (
-        <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+        <TouchableWithoutFeedback onPress={Keyboard.dismiss} onBlur={() => console.log('blur')}>
             <View style={{ flex: 1 }}>
                 <View>
                     <View style={styles.preview} onChangeText={(newText) => setText(newText)}>
@@ -261,8 +403,8 @@ export default function AddTwok() {
                         <Text style={styles.twokOptionButton}>{'Positioning'}</Text>
                     </TouchableOpacity>
 
-                    <TouchableOpacity style={[styles.twokOption, { width: '15%' }]} onPress={() => setPage(4)}>
-                        <Image style={{ width: 40, height: 40, tintColor: '#fcba03' }} source={post}></Image>
+                    <TouchableOpacity style={[styles.twokOption, {backgroundColor:colors.lightBlue, width: '15%' }]} onPress={() => setPage(4)}>
+                        <Image style={{ width: 40, height: 40, tintColor: colors.blue }} source={post}></Image>
                     </TouchableOpacity>
 
                 </View>
@@ -274,4 +416,47 @@ export default function AddTwok() {
         </TouchableWithoutFeedback>
     )
 
+}
+
+function checkIfColor(hex) {
+    var regex = /[0-9A-Fa-f]{6}/g
+    if (hex.match(regex)) {
+        return true
+    } else {
+        return false
+    }
+}
+
+function getAlign(align) {
+    switch (align) {
+        case 0:
+            return 'flex-start'
+            break;
+        case 1:
+            return 'center'
+            break;
+        case 2:
+            return 'flex-end'
+            break;
+        default:
+            return 'flext-start'
+
+    }
+}
+
+function getTextAlign(halign) {
+    switch (halign) {
+        case 0:
+            return 'left'
+            break;
+        case 1:
+            return 'center'
+            break;
+        case 2:
+            return 'right'
+            break;
+        default:
+            return 'left'
+
+    }
 }

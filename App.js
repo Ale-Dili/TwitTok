@@ -7,7 +7,7 @@ import ProfileScreen from './view/ProfileScreen';
 import FollowedScreen from './view/FollowedScreen';
 import ContextUserInfo from './ContextUserInfo';
 import Helper from './viewModel/Helper';
-import AsyncStorage from '@react-native-async-storage/async-storage';
+import colors from './assets/colors'
 
 
 
@@ -21,23 +21,23 @@ const Tab = createBottomTabNavigator();
 
 function MyTabs() {
   //console.log(React.useContext(ContextUserInfo))
-
+console.log(colors)
   return (
     <>
       
         <Tab.Navigator
           initialRouteName="TwikTok"
           screenOptions={{
-            tabBarActiveTintColor: '#4502b0',
+            tabBarActiveTintColor: colors.lightBlue,
             tabBarLabelStyle: { fontSize: 12 },
-            tabBarStyle: { backgroundColor: '#fcba03' },
+            tabBarStyle: { backgroundColor: colors.blue },
           }}
         >
 
           <Tab.Screen
             name="Followed"
             component={FollowedScreen}
-            options={{ tabBarLabel: 'Followed', headerStyle: { backgroundColor: '#fcba03' },headerShown: false,  }}
+            options={{ tabBarLabel: 'Followed', headerStyle: { backgroundColor: colors.blue },headerShown: false,  }}
           />
 
 
@@ -45,7 +45,7 @@ function MyTabs() {
           <Tab.Screen
             name="TwikTok"
             component={HomeScreen}
-            options={{ tabBarLabel: 'TwikTok', headerStyle: { backgroundColor: '#fcba03' },headerShown: false }}
+            options={{ tabBarLabel: 'TwikTok', headerStyle: { backgroundColor: colors.blue },headerShown: false }}
           >
             {/* initialParams={{helper:helper}} . this.props.route.params */}
 
@@ -53,7 +53,7 @@ function MyTabs() {
           <Tab.Screen
             name="Profile"
             component={ProfileScreen}
-            options={{ tabBarLabel: 'Profile', headerStyle: { backgroundColor: '#fcba03' },}}
+            options={{ tabBarLabel: 'Profile', headerStyle: { backgroundColor: colors.blue}, headerTintColor:colors.lightBlue}}
           />
         </Tab.Navigator>
 

@@ -7,6 +7,7 @@ import TwoksBuffer from '../model/twoksBuffer';
 import Helper from '../viewModel/Helper';
 import ContextUserInfo from '../ContextUserInfo';
 import AddTwok from './AddTwok';
+import colors from '../assets/colors';
 
 
 
@@ -26,7 +27,7 @@ const styles = StyleSheet.create({
     borderRadius: 100,
     paddingVertical: 15,
     paddingHorizontal: 15,
-    backgroundColor: '#fcba03'
+    backgroundColor: colors.blue
   },
   input: {
     height: 40,
@@ -82,7 +83,7 @@ function FeedScreen({ props, navigation }) {
   if (waiting) {
     return (
       <SafeAreaView style={{ flex: 1, justifyContent: 'center', alignItems: 'center', paddingTop: '20%' }}>
-        <ActivityIndicator size="small" color="#0000ff" />
+        <ActivityIndicator size="small" color={colors.coral}/>
         <Text>{'If this take too long, please check your connectivity'}</Text>
       </SafeAreaView>)
   }
@@ -106,7 +107,7 @@ function FeedScreen({ props, navigation }) {
           onPress={() => navigation.navigate('AddTwok')}>
           <View>
             <Image
-              style={{ height: 50, width: 50 , tintColor:'#4502b0'}}
+              style={{ height: 50, width: 50 , tintColor:'#FFFFFF'}}
               source={require('../assets/TwitTokImg/plus-sign.png')}
             />
           </View>

@@ -8,6 +8,7 @@ import { useEffect, useState, useContext } from 'react';
 import ContextUserInfo from '../ContextUserInfo';
 import following from '../assets/TwitTokImg/following.png'
 import notFollowing from '../assets/TwitTokImg/notFollowing.png'
+import colors from '../assets/colors';
 
 
 const styles = StyleSheet.create({
@@ -26,7 +27,7 @@ const styles = StyleSheet.create({
         borderRadius: 100,
         paddingVertical: 15,
         paddingHorizontal: 15,
-        backgroundColor: '#fcba03'
+        backgroundColor: colors.blue
     },
     input: {
         height: 40,
@@ -123,10 +124,12 @@ function User(props) {
 
     function renderImage() {
         //e.log('immagine da stampare '+state.img)
+        let colorIcon = state.following ? colors.lightBlue : colors.lightBlue
         return (
             <Image
-                style={{ height: 50, width: 50 }}
+                style={{ height: 50, width: 50, tintColor: colorIcon }}
                 source={img}
+                
             />
         )
     }
@@ -135,7 +138,7 @@ function User(props) {
     if (waiting) {
         return (
             <SafeAreaView style={{ flex: 1, justifyContent: 'center', alignItems: 'center', paddingTop: '20%' }}>
-                <ActivityIndicator size="small" color="#0000ff" />
+                <ActivityIndicator size="small" color={colors.coral} />
             </SafeAreaView>)
     }
 
