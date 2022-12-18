@@ -1,4 +1,4 @@
-import { Text, View, TextInput, StyleSheet, TouchableWithoutFeedback, Keyboard, KeyboardAvoidingView, TouchableOpacity, Image, SafeAreaView, ActivityIndicator, Button } from "react-native"
+import { Text, View, TextInput, StyleSheet, TouchableWithoutFeedback, Keyboard, KeyboardAvoidingView, TouchableOpacity, Image, SafeAreaView, ActivityIndicator, Button, Switch } from "react-native"
 import { useContext, useEffect, useRef, useState } from "react"
 import ContextUserInfo from "../ContextUserInfo"
 import textColoring from '../assets/TwitTokImg/text-coloring.png'
@@ -24,6 +24,8 @@ export default function AddTwok() {
     const [valign, setValign] = useState(0)
     const [halign, setHalign] = useState(0)
 
+    const [isGps, setIsGps] = useState(false)
+
 
     const [waiting, setWaiting] = useState(true)
     const [page, setPage] = useState(1)  // 1 -> text / 2-> color / 3->positioning / 3-> post twok
@@ -39,8 +41,8 @@ export default function AddTwok() {
             padding: 5,
             borderRadius: 10,
             backgroundColor: '#' + backgroundColor,
-            justifyContent:getAlign(valign),
-            alignItems:getAlign(halign)
+            justifyContent: getAlign(valign),
+            alignItems: getAlign(halign)
 
 
         },
@@ -168,6 +170,10 @@ export default function AddTwok() {
         return 15 + 10 * fontSize
     }
 
+    function handleSwitchGps() {
+        setIsGps(!isGps)
+    }
+
     //----------------------------
 
 
@@ -280,90 +286,90 @@ export default function AddTwok() {
                 return (
                     <View style={{ flex: 1, }}>
                         <View style={{ flex: 1, flexDirection: 'row' }}>
-                            <TouchableOpacity style={{flex:1 ,borderWidth:2, borderColor: 'purple'}} onPress={() => {
+                            <TouchableOpacity style={{ flex: 1, borderWidth: 2, borderColor: colors.coral }} onPress={() => {
                                 setValign(0)
                                 setHalign(0)
                             }}>
 
-                                <View style={{ flex: 1, backgroundColor: 'skyblue' }}>
+                                <View style={{ flex: 1, backgroundColor: colors.lightBlue }}>
 
                                 </View>
                             </TouchableOpacity>
-                            <TouchableOpacity style={{flex:1 ,borderWidth:2, borderColor: 'purple'}} onPress={() => {
+                            <TouchableOpacity style={{ flex: 1, borderWidth: 2, borderColor: colors.coral }} onPress={() => {
                                 setValign(0)
                                 setHalign(1)
                             }}>
 
-                                <View style={{ flex: 1, backgroundColor: 'orange' }}>
+                                <View style={{ flex: 1, backgroundColor: colors.lightBlue }}>
 
                                 </View>
                             </TouchableOpacity>
-                            <TouchableOpacity style={{flex:1 ,borderWidth:2, borderColor: 'purple'}} onPress={() => {
+                            <TouchableOpacity style={{ flex: 1, borderWidth: 2, borderColor: colors.coral }} onPress={() => {
                                 setValign(0)
                                 setHalign(2)
                             }}>
 
-                                <View style={{ flex: 1, backgroundColor: 'red' }}>
+                                <View style={{ flex: 1, backgroundColor: colors.lightBlue }}>
 
                                 </View>
                             </TouchableOpacity>
-                            
+
+                        </View>
+                        <View style={{ flex: 1, flexDirection: 'row' }}>
+                            <TouchableOpacity style={{ flex: 1, borderWidth: 2, borderColor: colors.coral }} onPress={() => {
+                                setValign(1)
+                                setHalign(0)
+                            }}>
+
+                                <View style={{ flex: 1, backgroundColor: colors.lightBlue }}>
+
+                                </View>
+                            </TouchableOpacity>
+                            <TouchableOpacity style={{ flex: 1, borderWidth: 2, borderColor: colors.coral }} onPress={() => {
+                                setValign(1)
+                                setHalign(1)
+                            }}>
+
+                                <View style={{ flex: 1, backgroundColor: colors.lightBlue }}>
+
+                                </View>
+                            </TouchableOpacity>
+                            <TouchableOpacity style={{ flex: 1, borderWidth: 2, borderColor: colors.coral }} onPress={() => {
+                                setValign(1)
+                                setHalign(2)
+                            }}>
+
+                                <View style={{ flex: 1, backgroundColor: colors.lightBlue }}>
+
+                                </View>
+                            </TouchableOpacity>
+
                         </View>
                         <View style={{ flex: 1, flexDirection: 'row' }}>
-                        <TouchableOpacity style={{flex:1 , borderWidth:2, borderColor: 'purple'}} onPress={() => {
-                                setValign(1)
-                                setHalign(0)
-                            }}>
-
-                                <View style={{ flex: 1, backgroundColor: 'purple' }}>
-
-                                </View>
-                            </TouchableOpacity>
-                            <TouchableOpacity style={{flex:1 ,borderWidth:2, borderColor: 'purple'}} onPress={() => {
-                                setValign(1)
-                                setHalign(1)
-                            }}>
-
-                                <View style={{ flex: 1, backgroundColor: 'orange' }}>
-
-                                </View>
-                            </TouchableOpacity>
-                            <TouchableOpacity style={{flex:1,borderWidth:2, borderColor: 'purple' }} onPress={() => {
-                                setValign(1)
-                                setHalign(2)
-                            }}>
-
-                                <View style={{ flex: 1, backgroundColor: 'red' }}>
-
-                                </View>
-                            </TouchableOpacity>
-
-                        </View>
-                        <View style={{ flex: 1,  flexDirection: 'row' }}>
-                        <TouchableOpacity style={{flex:1,borderWidth:2, borderColor: 'purple' }} onPress={() => {
+                            <TouchableOpacity style={{ flex: 1, borderWidth: 2, borderColor: colors.coral }} onPress={() => {
                                 setValign(2)
                                 setHalign(0)
                             }}>
 
-                                <View style={{ flex: 1, backgroundColor: 'purple' }}>
+                                <View style={{ flex: 1, backgroundColor: colors.lightBlue }}>
 
                                 </View>
                             </TouchableOpacity>
-                            <TouchableOpacity style={{flex:1 ,borderWidth:2, borderColor: 'purple'}} onPress={() => {
+                            <TouchableOpacity style={{ flex: 1, borderWidth: 2, borderColor: colors.coral }} onPress={() => {
                                 setValign(2)
                                 setHalign(1)
                             }}>
 
-                                <View style={{ flex: 1, backgroundColor: 'orange' }}>
+                                <View style={{ flex: 1, backgroundColor: colors.lightBlue }}>
 
                                 </View>
                             </TouchableOpacity>
-                            <TouchableOpacity style={{flex:1 ,borderWidth:2, borderColor: 'purple'}} onPress={() => {
+                            <TouchableOpacity style={{ flex: 1, borderWidth: 2, borderColor: colors.coral }} onPress={() => {
                                 setValign(2)
                                 setHalign(2)
                             }}>
 
-                                <View style={{ flex: 1, backgroundColor: 'red' }}>
+                                <View style={{ flex: 1, backgroundColor: colors.lightBlue }}>
 
                                 </View>
                             </TouchableOpacity>
@@ -374,6 +380,37 @@ export default function AddTwok() {
                 )
                 break;
             case 4:
+                return (
+                    <TouchableWithoutFeedback onPress={Keyboard.dismiss} onBlur={() => console.log('blur')}>
+                        <View style={{ flex: 1 }}>
+
+                            <View style={{ flex: 1, flexDirection: 'row', alignItems:'center' }}>
+                                <View style={{flex:2}}>
+                                    <Text style={styles.label}>{'Attach current position?'}</Text>
+                                </View>
+                                <View style={{flex:1, alignItems:'flex-end'}}>
+                                    <Switch
+                                        trackColor={{ false: colors.blue, true: colors.lightBlue }}
+                                        thumbColor={isGps ? '#FFFFFF' : "#f4f3f4"}
+                                        ios_backgroundColor="#3e3e3e"
+                                        onChange={handleSwitchGps}
+
+                                        value={isGps}
+                                    />
+                                </View>
+
+                            </View>
+
+                            <View style={{ flex: 1,justifyContent:'center',alignItems:'center' }}>
+                                <TouchableOpacity style={{height:'50%',width:'50%' ,backgroundColor:colors.lightBlue,justifyContent:'center',alignItems:'center', borderRadius:30, }}>
+
+                                    <Text style={styles.label}>{'TWOK!'}</Text>
+                                </TouchableOpacity>
+                            </View>
+
+                        </View>
+                    </TouchableWithoutFeedback>
+                )
 
                 break;
 
@@ -403,7 +440,7 @@ export default function AddTwok() {
                         <Text style={styles.twokOptionButton}>{'Positioning'}</Text>
                     </TouchableOpacity>
 
-                    <TouchableOpacity style={[styles.twokOption, {backgroundColor:colors.lightBlue, width: '15%' }]} onPress={() => setPage(4)}>
+                    <TouchableOpacity style={[styles.twokOption, { backgroundColor: colors.lightBlue, width: '15%' }]} onPress={() => setPage(4)}>
                         <Image style={{ width: 40, height: 40, tintColor: colors.blue }} source={post}></Image>
                     </TouchableOpacity>
 
