@@ -22,7 +22,6 @@ function TwokRow(props) {
     var twok = props.data.item;
     let fontSize
     if (twok.fontsize > 2) {
-
         fontSize = 15 + 20
     } else {
         fontSize = 15 + 10 * twok.fontsize;

@@ -8,7 +8,7 @@ const Stack = createNativeStackNavigator();
 
 function FollowedScreen(){
       return (
-        <Stack.Navigator initialRouteName="List">
+        <Stack.Navigator initialRouteName="List" screenOptions={{headerTitleStyle :{color:'#4502b0'}}}>
           <Stack.Screen name="List" component={FollowedList} options={{title: 'Followed Twokker',headerStyle: { backgroundColor: '#fcba03' }}} />
           <Stack.Screen name="SingleUser" component={User} options={{title: 'TwitTwok',headerStyle: { backgroundColor: '#fcba03' }}}/> 
         </Stack.Navigator>

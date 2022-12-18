@@ -28,7 +28,7 @@ function MyTabs() {
         <Tab.Navigator
           initialRouteName="TwikTok"
           screenOptions={{
-            tabBarActiveTintColor: '#000000',
+            tabBarActiveTintColor: '#4502b0',
             tabBarLabelStyle: { fontSize: 12 },
             tabBarStyle: { backgroundColor: '#fcba03' },
           }}
@@ -37,7 +37,7 @@ function MyTabs() {
           <Tab.Screen
             name="Followed"
             component={FollowedScreen}
-            options={{ tabBarLabel: 'Followed', headerStyle: { backgroundColor: '#fcba03' },headerShown: false }}
+            options={{ tabBarLabel: 'Followed', headerStyle: { backgroundColor: '#fcba03' },headerShown: false,  }}
           />
 
 

@@ -1,88 +1,277 @@
-import { Text, View, TextInput, StyleSheet, TouchableWithoutFeedback, Keyboard, KeyboardAvoidingView, TouchableOpacity, Image } from "react-native"
+import { Text, View, TextInput, StyleSheet, TouchableWithoutFeedback, Keyboard, KeyboardAvoidingView, TouchableOpacity, Image, SafeAreaView, ActivityIndicator, Button } from "react-native"
 import { useContext, useEffect, useState } from "react"
 import ContextUserInfo from "../ContextUserInfo"
 import textColoring from '../assets/TwitTokImg/text-coloring.png'
+import post from '../assets/TwitTokImg/post.png'
 
 
-const styles = StyleSheet.create({
-    profileImg: {
-        height: 300,
-        width: 300,
-    },
-    input: {
-        height: 300,
-        margin: 12,
-        borderWidth: 1,
-        padding: 10,
 
-
-    },
-    keyboardUp: {
-        flex: 1
-    },
-    twokOption: {
-        flex: 1,
-        backgroundColor: 'black',
-        height:'10%'
-   
-
-    },
-    textOption:{
-        color: '#fcba03',
-    }
-})
 
 export default function AddTwok() {
+
+
 
     const context = useContext(ContextUserInfo)
     let helper = context.helper
 
-    const [text, setText] = useState();
+    const [text, setText] = useState('');
+    const [fonttype, setFonttype] = useState(0); //tutti i pulsanti che appaiono sono numerati da 1 a 3, ma nella codifca vanno da 0 a 2 come da  rihchiesta
+    const [fontSize, setFontSize] = useState(0)
+    const [textColor, setTextColor] = useState('000000')
+    const [backgroundColor, setBackgroundColor] = useState('FFFFFF')
+
+    const [waiting, setWaiting] = useState(true)
+    const [page, setPage] = useState(1)  // 1 -> text / 2-> color / 3->positioning / 3-> post twok
+    const styles = StyleSheet.create({
+        profileImg: {
+            height: 300,
+            width: 300,
+        },
+        preview: {
+            height: 300,
+            margin: 12,
+            borderWidth: 1,
+            padding: 10,
+            borderRadius: 10,
+            backgroundColor:'#'+backgroundColor
+
+        },
+        textPreview: {
+            fontWeight: '700',
+            fontSize: renderFontSize(),
+            fontFamily: renderFonttype(),
+            color: '#'+textColor,
+        },
+        keyboardUp: {
+            flex: 1
+        },
+        twokOption: {
+
+            backgroundColor: '#4502b0',
+            height: '100%',
+            justifyContent: 'center',
+            alignItems: 'center',
+            borderRadius: 30
+
+
+
+        },
+        twokOptionButton: {
+            color: '#fcba03',
+            fontWeight: "700",
+
+        },
+        textOptionScreen: {
+            width: '100%',
+            flex: 1,
+            position: 'relative',
+
+        },
+        colorOptionScreen: {
+
+        },
+        positionOptionScreen: {
+
+        },
+        inputTextTwok: {
+            width: '100%',
+            flex: 1,
+            position: 'relative',
+
+            borderRadius: 10,
+            borderWidth: 3,
+            fontWeight: '700',
+            fontSize: 23,
+            margin: 10,
+            borderColor: '#4502b0',
+            padding: 10
+
+        },
+        screen: {
+            flex: 6
+        },
+        label: {
+            fontWeight: "700",
+            fontSize: 18,
+            color: '#4502b0'
+        }
+
+    })
 
     useEffect(() => {
         async function onMount() {
             if (!context.sid) {
-                return <ActivityIndicator size="small" color="#000000"></ActivityIndicator>
+                console.log('Loading...')
+                return
             }
+            setWaiting(false)
 
         }
         onMount()
     }, [context])
     //!!!!!!!!!!!!!!!!!!!!!!!Dopo aver mandato il twok, resettare lo stato
 
+    //---------Waiting---------
+    if (waiting) {
+        return (
+            <SafeAreaView style={{ flex: 1, justifyContent: 'center', alignItems: 'center', paddingTop: '20%' }}>
+                <ActivityIndicator size="small" color="#0000ff" />
+                <Text>{'If this take too long, please check your connectivity'}</Text>
+            </SafeAreaView>)
+    }
+    //-------------------------
+
+    //---------Preview Functions--------
+    function renderFonttype() {
+        switch (fonttype) {
+            case 0:
+                return 'System'
+                break;
+            case 1:
+                return 'Futura'
+                break;
+            case 2:
+                return 'Courier New'
+                break;
+            default:
+                return 'System'
+
+        }
+    }
+
+    function renderFontSize() {
+        return 15 + 10 * fontSize
+    }
+    //----------------------------
+
+
+    function renderPage() {
+        switch (page) {
+            case 1:
+                return (
+                    <View style={styles.textOptionScreen}>
+                        <View style={{ flex: 2, flexDirection: 'row', }}>
+                            <View style={{ justifyContent: 'center' }}>
+                                <Text style={styles.label}>{'Twok'}</Text>
+                            </View>
+                            <TextInput
+                                style={styles.inputTextTwok}
+                                onChangeText={(newText) => setText(newText)}
+                                value={text}
+                                multiline={true}
+                                maxLength={100}
+                            />
+                        </View>
+                        <View style={{ flex: 1, flexDirection: 'row', alignItems: 'center', }}>
+                            <View style={{ flex: 1, }}>
+                                <Text style={styles.label}>{'Size'}</Text>
+                            </View>
+                            <View style={{ flex: 6, height: '60%', justifyContent: "space-evenly", flexDirection: 'row' }}>
+                                <TouchableOpacity style={[styles.twokOption, { width: '15%' }]} onPress={() => setFontSize(0)}>
+                                    <Text style={styles.twokOptionButton}>{'1'}</Text>
+                                </TouchableOpacity>
+                                <TouchableOpacity style={[styles.twokOption, { width: '15%' }]} onPress={() => setFontSize(1)}>
+                                    <Text style={styles.twokOptionButton}>{'2'}</Text>
+                                </TouchableOpacity>
+                                <TouchableOpacity style={[styles.twokOption, { width: '15%' }]} onPress={() => setFontSize(2)}>
+                                    <Text style={styles.twokOptionButton}>{'3'}</Text>
+                                </TouchableOpacity>
+                            </View>
+                        </View>
+                        <View style={{ flex: 1, flexDirection: 'row', alignItems: 'center', }}>
+                            <View style={{ flex: 1, }}>
+                                <Text style={styles.label}>{'Font'}</Text>
+                            </View>
+                            <View style={{ flex: 6, height: '60%', justifyContent: "space-evenly", flexDirection: 'row' }}>
+                                <TouchableOpacity style={[styles.twokOption, { width: '15%' }]} onPress={() => setFonttype(0)}>
+                                    <Text style={styles.twokOptionButton}>{'1'}</Text>
+                                </TouchableOpacity>
+                                <TouchableOpacity style={[styles.twokOption, { width: '15%' }]} onPress={() => setFonttype(1)}>
+                                    <Text style={styles.twokOptionButton}>{'2'}</Text>
+                                </TouchableOpacity>
+                                <TouchableOpacity style={[styles.twokOption, { width: '15%' }]} onPress={() => setFonttype(2)}>
+                                    <Text style={styles.twokOptionButton}>{'3'}</Text>
+                                </TouchableOpacity>
+                            </View>
+                        </View>
+
+                    </View>
+                )
+                break;
+            case 2:
+                return (
+                    <View style={styles.textOptionScreen}>
+                        <View style={{ flex: 2, flexDirection: 'row', }}>
+                            <View style={{ justifyContent: 'center' }}>
+                                <Text style={styles.label}>{'Text Color'}</Text>
+                            </View>
+                            <TextInput
+                                style={styles.inputTextTwok}
+                                onChangeText={(newText) => setText(newText)}
+                                value={text}
+                                placeholder={'000000'}
+                                maxLength={6}
+                            />
+                        </View>
+                        <View style={{ flex: 2, flexDirection: 'row', }}>
+                            <View style={{ justifyContent: 'center' }}>
+                                <Text style={styles.label}>{'Back'}</Text>
+                            </View>
+                            <TextInput
+                                style={styles.inputTextTwok}
+                                onChangeText={(newText) => setText(newText)}
+                                value={text}
+                                placeholder={'FFFFFF'}
+                                maxLength={6}
+                            />
+                        </View>
+                    </View>
+                )
+                break;
+            case 3:
+
+                break;
+            case 4:
+
+                break;
+
+            default:
+                break;
+        }
+
+    }
     return (
-        // <KeyboardAvoidingView behavior='padding' style={styles.keyboardUp} keyboardVerticalOffset={0}>
         <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
             <View style={{ flex: 1 }}>
                 <View>
+                    <View style={styles.preview} onChangeText={(newText) => setText(newText)}>
 
-                
-                <TextInput
-                    style={styles.input}
-                    onChangeText={(newText) => setText(newText)}
-                    value={text}
-                />
+                        <Text style={styles.textPreview}> {text}</Text>
+                    </View>
                 </View>
-                <View style={{ flexDirection: 'row', flex: 1 }}>
-                    <TouchableOpacity style={styles.twokOption} onPress={() => console.log('pressed')}>
-                        <Text style={styles.textOption}>{'Color'}</Text> 
+                <View style={{ flexDirection: 'row', flex: 1, justifyContent: "space-evenly", }}>
+                    <TouchableOpacity style={[styles.twokOption, { width: '25%' }]} onPress={() => setPage(1)}>
+                        <Text style={styles.twokOptionButton}>{'Text Option'}</Text>
+                    </TouchableOpacity>
 
+                    <TouchableOpacity style={[styles.twokOption, { width: '15%' }]} onPress={() => setPage(2)}>
+                        <Text style={styles.twokOptionButton}>{'Color'}</Text>
                     </TouchableOpacity>
-                    <TouchableOpacity style={styles.twokOption} onPress={() => console.log('pressed')}>
-                        <Text style={styles.textOption}>{'Positioning'}</Text>
+                    <TouchableOpacity style={[styles.twokOption, { width: '25%' }]} onPress={() => setPage(3)}>
+                        <Text style={styles.twokOptionButton}>{'Positioning'}</Text>
                     </TouchableOpacity>
-                    <TouchableOpacity style={styles.twokOption} onPress={() => console.log('pressed')}>
-                        <Text style={styles.textOption}>{'Text Option'}</Text>
-                    </TouchableOpacity>
-                    <TouchableOpacity style={styles.twokOption} onPress={() => console.log('pressed')}>
-                        <Text style={styles.textOption}>{'POST'}</Text>
-                    </TouchableOpacity>
-                    
 
+                    <TouchableOpacity style={[styles.twokOption, { width: '15%' }]} onPress={() => setPage(4)}>
+                        <Image style={{ width: 40, height: 40, tintColor: '#fcba03' }} source={post}></Image>
+                    </TouchableOpacity>
 
                 </View>
+                <View style={styles.screen}>
+                    {renderPage()}
+                </View>
+
             </View >
         </TouchableWithoutFeedback>
-        // </KeyboardAvoidingView >
     )
+
 }

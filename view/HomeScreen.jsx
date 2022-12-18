@@ -15,7 +15,7 @@ const Stack = createNativeStackNavigator();
 
 function HomeScreen() {
   return (
-    <Stack.Navigator initialRouteName="Feed">
+    <Stack.Navigator initialRouteName="Feed" screenOptions={{headerTitleStyle :{color:'#4502b0'}}}>
       <Stack.Screen name="Feed" component={FeedScreen} options={{title: 'TwitTok',headerStyle: { backgroundColor: '#fcba03' }}} />
       <Stack.Screen name="SingleUser" component={User} options={{title: 'TwitTwok',headerStyle: { backgroundColor: '#fcba03' }}}/>
       <Stack.Screen name="Maps" component={Maps} options={{title: 'Twokked from...',headerStyle: { backgroundColor: '#fcba03' }}}/>

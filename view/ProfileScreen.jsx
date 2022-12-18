@@ -117,6 +117,7 @@ function ProfileScreen() {
               style={styles.input}
               onChangeText={(newText) => onChangeText(newText)}
               value={text}
+              maxLength={20}
             />
           </View>
           {renderButton()}

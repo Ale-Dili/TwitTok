@@ -55,7 +55,7 @@ function FeedScreen({ props, navigation }) {
   useEffect(() => {
     async function onMount() {
       if (!context.sid) {
-        console.log('caricamento in teoriea')
+        console.log('Loading')
         return
       }
 
@@ -106,7 +106,7 @@ function FeedScreen({ props, navigation }) {
           onPress={() => navigation.navigate('AddTwok')}>
           <View>
             <Image
-              style={{ height: 50, width: 50 }}
+              style={{ height: 50, width: 50 , tintColor:'#4502b0'}}
               source={require('../assets/TwitTokImg/plus-sign.png')}
             />
           </View>
