@@ -12,20 +12,22 @@ class Helper {
         this.sid = sid
     }
 
-    async addTwok(twoksBuffer, uid) {
-        //console.log(uid)
-        if (uid) {
-
-            var result = await this.communicationController.getTwok(this.sid, uid)
-        } else {
-            var result = await this.communicationController.getTwok(this.sid)
+    async getTwok(twoksBuffer, uid=null, tid=null) {
+        if(tid == -1){
+            tid=null
         }
-
+        var result = await this.communicationController.getTwok(this.sid, uid,tid)
         twoksBuffer.addTwok(result)
         return twoksBuffer
     }
+//184792
+    async addTwok(text,bgcol,fontcol,fontsize,fonttype,halign,valign,lat=null, lon=null){
+        await this.communicationController.addTwok(this.sid,text,bgcol,fontcol,fontsize,fonttype,halign,valign,lat,lon)
+        console.log('Twok posted')
+    }
 
     async follow(uid) {
+
         await this.communicationController.follow(this.sid, uid)
         console.log(this.sid + " starts following " + uid)
 

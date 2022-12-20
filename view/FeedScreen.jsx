@@ -36,7 +36,10 @@ const styles = StyleSheet.create({
     padding: 10,
   },
 });
+//-----------------------TIDSEQUENCE--------------------
+const tidSequence = -1
 
+//------------------------------------------------------
 
 
 //const sid = "KQW81h8HDaswwBIvBjG8"
@@ -62,7 +65,7 @@ function FeedScreen({ props, navigation }) {
 
       let stateTemp = new TwoksBuffer
       for (var i = 0; i < 5; i++) {
-        stateTemp = await helper.addTwok(stateTemp)
+        stateTemp = await helper.getTwok(stateTemp,null,tidSequence)
       }
       setWaiting(false)
       setState(stateTemp)
@@ -75,7 +78,7 @@ function FeedScreen({ props, navigation }) {
 
   async function loadData() {
     let stateTemp = state
-    stateTemp = await helper.addTwok(stateTemp)
+    stateTemp = await helper.getTwok(stateTemp,null,tidSequence)
     setState(stateTemp)
   }
 

@@ -4,12 +4,14 @@ import ContextUserInfo from "../ContextUserInfo"
 import textColoring from '../assets/TwitTokImg/text-coloring.png'
 import post from '../assets/TwitTokImg/post.png'
 import colors from "../assets/colors"
+import * as Location from 'expo-location';
 
 
 
 
-export default function AddTwok() {
 
+export default function AddTwok(navigation) {
+    console.log(navigation.navigation.navigate)
 
 
     const context = useContext(ContextUserInfo)
@@ -62,9 +64,6 @@ export default function AddTwok() {
             justifyContent: 'center',
             alignItems: 'center',
             borderRadius: 30
-
-
-
         },
         twokOptionButton: {
             color: colors.blue,
@@ -174,12 +173,45 @@ export default function AddTwok() {
         setIsGps(!isGps)
     }
 
+    async function postTwok() {
+        //text, bgcol, fontcol, fontsize, fonttype, halign, valign, lat = null, lon = null
+        //console.log(text, backgroundColor, textColor, fontSize, fonttype, halign, valign)
+        //helper.addTwok(text, backgroundColor, textColor, fontSize, fonttype, halign, valign)
+        let lat=null
+        let lon = null
+        if (isGps) {
+            let canUseLocation = false;
+            const grantedPermission = await Location.getForegroundPermissionsAsync()
+            if (grantedPermission.status === "granted") {
+                canUseLocation = true;
+            } else {
+                const permissionResponse = await Location.requestForegroundPermissionsAsync()
+                if (permissionResponse.status === "granted") {
+                    canUseLocation = true;
+                }
+            }
+            if (canUseLocation) {
+                const location = await Location.getCurrentPositionAsync()
+                console.log('lat: ' + location.coords.latitude + '-lon: ' + location.coords.longitude);
+                lat = location.coords.latitude
+                lon = location.coords.longitude
+            }
+        }
+        helper.addTwok(text, backgroundColor, textColor, fontSize, fonttype, halign, valign,lat,lon)
+        navigation.navigation.navigate('Feed')
+
+    }
+
+
+
+
     //----------------------------
 
 
     function renderPage() {
         switch (page) {
             case 1:
+                
                 return (
                     <View style={styles.textOptionScreen}>
                         <View style={{ flex: 2, flexDirection: 'row', }}>
@@ -201,14 +233,14 @@ export default function AddTwok() {
                                 <Text style={styles.label}>{'Size'}</Text>
                             </View>
                             <View style={{ flex: 6, height: '60%', justifyContent: "space-evenly", flexDirection: 'row' }}>
-                                <TouchableOpacity style={[styles.twokOption, { width: '15%' }]} onPress={() => setFontSize(0)}>
-                                    <Text style={styles.twokOptionButton}>{'1'}</Text>
+                                <TouchableOpacity style={[styles.twokOption, { width: '15%',backgroundColor:((fontSize==0)?colors.blue:colors.coral) }]} onPress={() => setFontSize(0)}>
+                                    <Text style={[styles.twokOptionButton,{color:((fontSize==0)?colors.coral:colors.blue)}]}>{'1'}</Text>
                                 </TouchableOpacity>
-                                <TouchableOpacity style={[styles.twokOption, { width: '15%' }]} onPress={() => setFontSize(1)}>
-                                    <Text style={styles.twokOptionButton}>{'2'}</Text>
+                                <TouchableOpacity style={[styles.twokOption, { width: '15%' ,backgroundColor:((fontSize==1)?colors.blue:colors.coral)}]} onPress={() => setFontSize(1)}>
+                                    <Text style={[styles.twokOptionButton,{color:((fontSize==1)?colors.coral:colors.blue)}]}>{'2'}</Text>
                                 </TouchableOpacity>
-                                <TouchableOpacity style={[styles.twokOption, { width: '15%' }]} onPress={() => setFontSize(2)}>
-                                    <Text style={styles.twokOptionButton}>{'3'}</Text>
+                                <TouchableOpacity style={[styles.twokOption, { width: '15%',backgroundColor:((fontSize==2)?colors.blue:colors.coral) }]} onPress={() => setFontSize(2)}>
+                                    <Text style={[styles.twokOptionButton,{color:((fontSize==2)?colors.coral:colors.blue)}]}>{'3'}</Text>
                                 </TouchableOpacity>
                             </View>
                         </View>
@@ -217,14 +249,14 @@ export default function AddTwok() {
                                 <Text style={styles.label}>{'Font'}</Text>
                             </View>
                             <View style={{ flex: 6, height: '60%', justifyContent: "space-evenly", flexDirection: 'row' }}>
-                                <TouchableOpacity style={[styles.twokOption, { width: '15%' }]} onPress={() => setFonttype(0)}>
-                                    <Text style={styles.twokOptionButton}>{'1'}</Text>
+                                <TouchableOpacity style={[styles.twokOption, { width: '15%',backgroundColor:((fonttype==0)?colors.blue:colors.coral) }]} onPress={() => setFonttype(0)}>
+                                    <Text style={[styles.twokOptionButton,{color:((fonttype==0)?colors.coral:colors.blue)}]}>{'1'}</Text>
                                 </TouchableOpacity>
-                                <TouchableOpacity style={[styles.twokOption, { width: '15%' }]} onPress={() => setFonttype(1)}>
-                                    <Text style={styles.twokOptionButton}>{'2'}</Text>
+                                <TouchableOpacity style={[styles.twokOption, { width: '15%',backgroundColor:((fonttype==1)?colors.blue:colors.coral) }]} onPress={() => setFonttype(1)}>
+                                    <Text style={[styles.twokOptionButton,{color:((fonttype==1)?colors.coral:colors.blue)}]}>{'2'}</Text>
                                 </TouchableOpacity>
-                                <TouchableOpacity style={[styles.twokOption, { width: '15%' }]} onPress={() => setFonttype(2)}>
-                                    <Text style={styles.twokOptionButton}>{'3'}</Text>
+                                <TouchableOpacity style={[styles.twokOption, { width: '15%',backgroundColor:((fonttype==2)?colors.blue:colors.coral) }]} onPress={() => setFonttype(2)}>
+                                    <Text style={[styles.twokOptionButton,{color:((fonttype==2)?colors.coral:colors.blue)}]}>{'3'}</Text>
                                 </TouchableOpacity>
                             </View>
                         </View>
@@ -286,12 +318,12 @@ export default function AddTwok() {
                 return (
                     <View style={{ flex: 1, }}>
                         <View style={{ flex: 1, flexDirection: 'row' }}>
-                            <TouchableOpacity style={{ flex: 1, borderWidth: 2, borderColor: colors.coral }} onPress={() => {
+                            <TouchableOpacity style={{ flex: 1, borderWidth: 2, borderColor: colors.coral}} onPress={() => {
                                 setValign(0)
                                 setHalign(0)
                             }}>
 
-                                <View style={{ flex: 1, backgroundColor: colors.lightBlue }}>
+                                <View style={{ flex: 1, backgroundColor: (((valign==0)&&(halign==0))?colors.blue:colors.lightBlue) }}>
 
                                 </View>
                             </TouchableOpacity>
@@ -300,7 +332,7 @@ export default function AddTwok() {
                                 setHalign(1)
                             }}>
 
-                                <View style={{ flex: 1, backgroundColor: colors.lightBlue }}>
+                                <View style={{ flex: 1, backgroundColor: (((valign==0)&&(halign==1))?colors.blue:colors.lightBlue) }}>
 
                                 </View>
                             </TouchableOpacity>
@@ -309,7 +341,7 @@ export default function AddTwok() {
                                 setHalign(2)
                             }}>
 
-                                <View style={{ flex: 1, backgroundColor: colors.lightBlue }}>
+                                <View style={{ flex: 1, backgroundColor: (((valign==0)&&(halign==2))?colors.blue:colors.lightBlue) }}>
 
                                 </View>
                             </TouchableOpacity>
@@ -321,7 +353,7 @@ export default function AddTwok() {
                                 setHalign(0)
                             }}>
 
-                                <View style={{ flex: 1, backgroundColor: colors.lightBlue }}>
+                                <View style={{ flex: 1, backgroundColor: (((valign==1)&&(halign==0))?colors.blue:colors.lightBlue)}}>
 
                                 </View>
                             </TouchableOpacity>
@@ -330,7 +362,7 @@ export default function AddTwok() {
                                 setHalign(1)
                             }}>
 
-                                <View style={{ flex: 1, backgroundColor: colors.lightBlue }}>
+                                <View style={{ flex: 1, backgroundColor: (((valign==1)&&(halign==1))?colors.blue:colors.lightBlue) }}>
 
                                 </View>
                             </TouchableOpacity>
@@ -339,7 +371,7 @@ export default function AddTwok() {
                                 setHalign(2)
                             }}>
 
-                                <View style={{ flex: 1, backgroundColor: colors.lightBlue }}>
+                                <View style={{ flex: 1, backgroundColor:(((valign==1)&&(halign==2))?colors.blue:colors.lightBlue) }}>
 
                                 </View>
                             </TouchableOpacity>
@@ -351,7 +383,7 @@ export default function AddTwok() {
                                 setHalign(0)
                             }}>
 
-                                <View style={{ flex: 1, backgroundColor: colors.lightBlue }}>
+                                <View style={{ flex: 1, backgroundColor: (((valign==2)&&(halign==0))?colors.blue:colors.lightBlue) }}>
 
                                 </View>
                             </TouchableOpacity>
@@ -360,7 +392,7 @@ export default function AddTwok() {
                                 setHalign(1)
                             }}>
 
-                                <View style={{ flex: 1, backgroundColor: colors.lightBlue }}>
+                                <View style={{ flex: 1, backgroundColor: (((valign==2)&&(halign==1))?colors.blue:colors.lightBlue) }}>
 
                                 </View>
                             </TouchableOpacity>
@@ -369,7 +401,7 @@ export default function AddTwok() {
                                 setHalign(2)
                             }}>
 
-                                <View style={{ flex: 1, backgroundColor: colors.lightBlue }}>
+                                <View style={{ flex: 1, backgroundColor: (((valign==2)&&(halign==2))?colors.blue:colors.lightBlue) }}>
 
                                 </View>
                             </TouchableOpacity>
@@ -384,11 +416,11 @@ export default function AddTwok() {
                     <TouchableWithoutFeedback onPress={Keyboard.dismiss} onBlur={() => console.log('blur')}>
                         <View style={{ flex: 1 }}>
 
-                            <View style={{ flex: 1, flexDirection: 'row', alignItems:'center' }}>
-                                <View style={{flex:2}}>
+                            <View style={{ flex: 1, flexDirection: 'row', alignItems: 'center' }}>
+                                <View style={{ flex: 2 }}>
                                     <Text style={styles.label}>{'Attach current position?'}</Text>
                                 </View>
-                                <View style={{flex:1, alignItems:'flex-end'}}>
+                                <View style={{ flex: 1, alignItems: 'flex-end' }}>
                                     <Switch
                                         trackColor={{ false: colors.blue, true: colors.lightBlue }}
                                         thumbColor={isGps ? '#FFFFFF' : "#f4f3f4"}
@@ -401,9 +433,9 @@ export default function AddTwok() {
 
                             </View>
 
-                            <View style={{ flex: 1,justifyContent:'center',alignItems:'center' }}>
-                                <TouchableOpacity style={{height:'50%',width:'50%' ,backgroundColor:colors.lightBlue,justifyContent:'center',alignItems:'center', borderRadius:30, }}>
-
+                            <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+                                <TouchableOpacity style={{ height: '50%', width: '50%', backgroundColor: colors.lightBlue, justifyContent: 'center', alignItems: 'center', borderRadius: 30, }}
+                                    onPress={() => { postTwok() }}>
                                     <Text style={styles.label}>{'TWOK!'}</Text>
                                 </TouchableOpacity>
                             </View>
@@ -429,19 +461,19 @@ export default function AddTwok() {
                     </View>
                 </View>
                 <View style={{ flexDirection: 'row', flex: 1, justifyContent: "space-evenly", }}>
-                    <TouchableOpacity style={[styles.twokOption, { width: '25%' }]} onPress={() => setPage(1)}>
-                        <Text style={styles.twokOptionButton}>{'Text Option'}</Text>
+                    <TouchableOpacity style={[styles.twokOption, { width: '25%' , backgroundColor:((page==1)?colors.blue:colors.coral)}]} onPress={() => setPage(1)}>
+                        <Text style={[styles.twokOptionButton,{color:((page==1)?colors.coral:colors.blue)}]}>{'Text Option'}</Text>
                     </TouchableOpacity>
 
-                    <TouchableOpacity style={[styles.twokOption, { width: '15%' }]} onPress={() => setPage(2)}>
-                        <Text style={styles.twokOptionButton}>{'Color'}</Text>
+                    <TouchableOpacity style={[styles.twokOption, { width: '15%', backgroundColor:((page==2)?colors.blue:colors.coral) }]} onPress={() => setPage(2)}>
+                        <Text style={[styles.twokOptionButton,{color:((page==2)?colors.coral:colors.blue)}]}>{'Color'}</Text>
                     </TouchableOpacity>
-                    <TouchableOpacity style={[styles.twokOption, { width: '25%' }]} onPress={() => setPage(3)}>
-                        <Text style={styles.twokOptionButton}>{'Positioning'}</Text>
+                    <TouchableOpacity style={[styles.twokOption, { width: '25%',backgroundColor:((page==3)?colors.blue:colors.coral) }]} onPress={() => setPage(3)}>
+                        <Text style={[styles.twokOptionButton,{color:((page==3)?colors.coral:colors.blue)}]}>{'Positioning'}</Text>
                     </TouchableOpacity>
 
-                    <TouchableOpacity style={[styles.twokOption, { backgroundColor: colors.lightBlue, width: '15%' }]} onPress={() => setPage(4)}>
-                        <Image style={{ width: 40, height: 40, tintColor: colors.blue }} source={post}></Image>
+                    <TouchableOpacity style={[styles.twokOption, { backgroundColor:((page==4)?colors.blue:colors.lightBlue), width: '15%' }]} onPress={() => setPage(4)}>
+                        <Image style={{ width: 40, height: 40, tintColor:((page==4)?colors.lightBlue:colors.blue) }} source={post}></Image>
                     </TouchableOpacity>
 
                 </View>

@@ -81,7 +81,7 @@ function User(props) {
 
             }
             for (var i = 0; i < 5; i++) {
-                state.twoksBuffer = await helper.addTwok(state.twoksBuffer, props.route.params.uid)
+                state.twoksBuffer = await helper.getTwok(state.twoksBuffer, props.route.params.uid)
             }
             console.log(state.following)
 
@@ -102,7 +102,7 @@ function User(props) {
 
 
     async function loadData() {
-        state.twoksBuffer = await helper.addTwok(state.twoksBuffer, props.route.params.uid)
+        state.twoksBuffer = await helper.getTwok(state.twoksBuffer, props.route.params.uid)
         setState(state)
     }
 
