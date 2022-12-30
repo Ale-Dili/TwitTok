@@ -1,6 +1,6 @@
 import * as React from 'react';
-import { Text, SafeAreaView, ActivityIndicator, View, Image, StyleSheet, TouchableOpacity, Button, TextInput, ImageBackground, TouchableWithoutFeedback, Keyboard, KeyboardAvoidingView, Pressable } from 'react-native';
-import { useState, useEffect, useContext } from 'react';
+import { Text, SafeAreaView, ActivityIndicator, View, Image, StyleSheet, TouchableOpacity, Button, TextInput, ImageBackground, TouchableWithoutFeedback, Keyboard, KeyboardAvoidingView, Pressable, Alert } from 'react-native';
+import { useState, useEffect, useContext, } from 'react';
 import defaultPic from '../assets/TwitTokImg/defaultPic.png'
 import defaultPic2 from '../assets/TwitTokImg/defaultPic2.png'
 import ContextUserInfo from '../ContextUserInfo';
@@ -56,13 +56,15 @@ const styles = StyleSheet.create({
     backgroundColor: 'white',
     borderRadius: 20,
     overflow: 'hidden',
-    padding: 5
+    padding: 5,
+    margin: 10
   }
 })
 
 
 function ProfileScreen() {
   const [img, setImg] = useState()
+  const [imgTemp, setImgTemp] = useState()
   const [name, setName] = useState()
   const [isChanged, setIsChanged] = useState(false)
   const [text, setText] = useState(name);
@@ -79,14 +81,20 @@ function ProfileScreen() {
         return <ActivityIndicator size="small" color="#000000"></ActivityIndicator>
       }
 
-      let result = await helper.getProfile(context.sid)
+      let result = await helper.getProfile()
       if (result.picture) {
+
         setImg(result.picture)
+        setImgTemp(result.picture)
+
       } else {
         setImg(defaultPic)
+        setImgTemp(defaultPic)
       }
+
       setName(result.name)
       setText(result.name)
+
     }
     onMount()
   }, [context])
@@ -94,18 +102,18 @@ function ProfileScreen() {
 
   function renderImage() {
     //.log('foto:'+img)
-    if (img === defaultPic){
+    if (imgTemp === defaultPic) {
       return (
-        <ImageBackground style={styles.profileImg} source={img}>
+        <ImageBackground style={styles.profileImg} source={imgTemp}>
           <TouchableOpacity style={{ borderRadius: 15 }} onPress={() => { changeImg() }}>
             <Text style={styles.editImgButton}>{'Modifica'}</Text>
           </TouchableOpacity>
         </ImageBackground>
       )
-    }else{
+    } else {
       return (
-        <ImageBackground style={styles.profileImg} source={{uri:img}}>
-          <TouchableOpacity style={{ borderRadius: 15 }} onPress={() => { changeImg() }}>
+        <ImageBackground style={styles.profileImg} source={{ uri: 'data:image/png;base64,'+imgTemp }}>
+          <TouchableOpacity style={{ borderRadius: 15, }} onPress={() => { changeImg() }}>
             <Text style={styles.editImgButton}>{'Modifica'}</Text>
           </TouchableOpacity>
         </ImageBackground>
@@ -115,17 +123,23 @@ function ProfileScreen() {
   }
 
   async function changeImg() {
-    const img = await ImagePicker.launchImageLibraryAsync({
+    const imgTemp = await ImagePicker.launchImageLibraryAsync({
       mediaTypes: ImagePicker.MediaTypeOptions.Images,
       quality: 1,
       allowsEditing: true
     })
-
-    const base64Img = await FileSystem.readAsStringAsync(img.assets[0].uri, { encoding: "base64" })
-
-    setImg('data:image/png;base64,' + base64Img)
-    //setImg(defaultPic2)
-    setIsChanged(true)
+    if (imgTemp.assets) {
+      const base64Img = await FileSystem.readAsStringAsync(imgTemp.assets[0].uri, { encoding: "base64" })
+      if (base64Img.length < 137000) {
+        setImgTemp(base64Img)
+        setIsChanged(true)
+      } else {
+        Alert.alert(
+          'Please select a smaller image',
+          'Size must be smaller than 100KB'
+        )
+      }
+    }
   }
 
 
@@ -133,13 +147,24 @@ function ProfileScreen() {
     console.log('changes cancelled')
     setText(name)
     setIsChanged(false)
+    setImgTemp(img)
   }
 
   function saveChanges() {
+    if ((imgTemp != img) && (text != name)) {
+      helper.setProfile(text, imgTemp)
+      setName(text)
+      setImg(imgTemp)
+    }else if(imgTemp == img){
+      helper.setProfile(text)
+      setName(text)
+    }else{
+      helper.setProfile(null, imgTemp)
+      setImg(imgTemp)
+    }
     console.log('changes saved')
-    helper.setProfile(text)
     setIsChanged(false)
-    setName(text)
+
 
   }
 

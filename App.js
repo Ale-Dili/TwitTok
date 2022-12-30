@@ -21,7 +21,7 @@ const Tab = createBottomTabNavigator();
 
 function MyTabs() {
   //console.log(React.useContext(ContextUserInfo))
-console.log(colors)
+
   return (
     <>
       

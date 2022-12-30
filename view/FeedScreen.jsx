@@ -38,6 +38,7 @@ const styles = StyleSheet.create({
 });
 //-----------------------TIDSEQUENCE--------------------
 const tidSequence = -1
+const postedTwokOnly = false //i primi 5 twok saranno del proprietario del profilo
 
 //------------------------------------------------------
 
@@ -58,14 +59,20 @@ function FeedScreen({ props, navigation }) {
 
   useEffect(() => {
     async function onMount() {
+
       if (!context.sid) {
         console.log('Loading')
         return
       }
 
+      let uid=null
+      if(postedTwokOnly){
+        uid= (await helper.getProfile()).uid
+      }
+
       let stateTemp = new TwoksBuffer
       for (var i = 0; i < 5; i++) {
-        stateTemp = await helper.getTwok(stateTemp,null,tidSequence)
+        stateTemp = await helper.getTwok(stateTemp,uid,tidSequence)
       }
       setWaiting(false)
       setState(stateTemp)

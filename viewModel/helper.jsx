@@ -10,7 +10,7 @@ class Helper {
     sid;
     constructor(sid) {
         this.sid = sid
-    }
+    } 
 
     async getTwok(twoksBuffer, uid=null, tid=null) {
         if(tid == -1){

@@ -1,7 +1,7 @@
 class CommunicationController {
     async generalRequest(param, endpoint) {
         //console.log (endpoint + ' '+ param)
-
+       // console.log(param, endpoint)
         var request = await fetch("https://develop.ewlab.di.unimi.it/mc/twittok/" + endpoint, {
             method: 'POST',
             headers: {
@@ -77,7 +77,7 @@ class CommunicationController {
     }
 
     async getPicture(sid, uid) {
-        //console.log(sid)
+        
         var param = JSON.stringify({ sid: sid, uid: uid })
         var endpoint = "getPicture"
 
@@ -85,7 +85,7 @@ class CommunicationController {
     }
 
     async getProfile(sid) {
-        var param = JSON.stringify({ sid: sid })
+        var param =  JSON.stringify({ sid: sid })
         var endpoint = "getProfile"
         return await this.generalRequest(param, endpoint)
     }
