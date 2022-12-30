@@ -102,6 +102,8 @@ function TwokRow(props) {
 
 
             return (
+
+        
                 <Image
                     style={styles.twokkerPic}
                     source={img}

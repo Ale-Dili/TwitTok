@@ -67,8 +67,6 @@ class Helper {
 
     //ritorna immagine di profilo associata a quel uid, e pversion
     //se la immagine salvata in locale è obsoleta o è assente, si occupa di risolvere
-
-
     async getPicture(uid, pversion) {
         
         //console.log('uid: '+uid+' '+pversion)

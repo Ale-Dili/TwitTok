@@ -13,7 +13,6 @@ class CommunicationController {
         switch (request.status) {
             case 200:
                 //console.log(endpoint+" Successful")
-
                 break;
             case 400:
                 console.error(endpoint + " Bad parameters")

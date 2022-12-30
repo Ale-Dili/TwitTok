@@ -14,33 +14,9 @@ export default class StorageManager {
         });
     }
 
-    //result.rows._array[0].pic
-
-    //I PARAMETRI NON VANNO
-    // async getPicture(uid, pversion) {
-    //     this.db.transaction(tx => {
-    //         tx.executeSql('SELECT * FROM UserPic where uid=' + uid + ' and pversion =' + pversion, [],
-    //             (tx, result) => {
-    //                 if (result.rows.length > 0) {
-    //                     // console.log(result.rows._array[0].pic)
-    //                     //return  onResult(result.rows._array[0].pic).then((result)=>{return result})
-    //                     onResult(result.rows._array[0].pic)
-
-    //                 } else {
-    //                     return undefined
-    //                 }
-    //             },
-    //             (tx, error) => { console.error(error) });
-    //     });
-
-    //     let onResult = async function (result) {
-    //         return new Promise((accept) => accept)
-    //     }
-    // }
 
     getPictureIfPresent = async (uid, pversion) => {
         return new Promise((resolve, reject) => {
-
             this.db.transaction(tx => {
                 tx.executeSql('SELECT * FROM UserPic where uid=' + uid + ' and pversion =' + pversion, [],
                     (tx, result) => {
@@ -66,9 +42,9 @@ export default class StorageManager {
 
     }
 
+
     addProfilePicture=async (uid, pversion, pic) => {
         return new Promise((resolve, reject) => {
-
             this.db.transaction(tx => {
                 tx.executeSql('INSERT or REPLACE INTO UserPic (uid,pversion,pic) VALUES ("'+uid+'","'+pversion+'","'+pic+'")', [],
                     (tx, result) => {
